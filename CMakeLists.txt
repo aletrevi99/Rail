@@ -32,4 +32,4 @@ add_library(Schedule Include/Schedule/Schedule.h
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Assegnameto2 main.cpp)
+add_executable(Assegnamento2 main.cpp)
