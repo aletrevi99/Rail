@@ -1,8 +1,6 @@
 #include <iostream>
 
-#include "Regional_Train.h"
-#include "High_Speed_Train.h"
-#include "Super_High_Speed_Train.h"
+#include <Train>
 
 int main()
 {
