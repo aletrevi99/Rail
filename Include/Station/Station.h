@@ -7,7 +7,6 @@
  * Data di creazione: 29/12/2020
 */
 
-
 #include <iostream>
 
 #ifndef ASSEGNAMENTO_2_STATION_H
@@ -22,21 +21,24 @@ class Station{
         std::string get_Station_name() const {return name;};
         int get_Station_distance() const {return distance;};
         bool get_Station_type() const {return is_Local;};
-        
+        bool get_stb1_status() const {return stb1;};
+        bool get_stb2_status() const {return stb2;};
+        bool get_stb3_status() const {return stb3;};
+        bool get_stb4_status() const {return stb4;};
     
     protected:
         Station(std::string n, int d, bool loc)
-            : name {n}, distance {d}, is_Local {loc}, st1 {true}, st2 {true}, st3 {true}, st4 {true} {}
+            : name {n}, distance {d}, is_Local {loc}, stb1 {true}, stb2 {true}, stb3 {true}, stb4 {true} {}
         ~Station() = default;
     
     private:
         std::string name;
         int distance;
         bool is_Local;      //is_Local = true -> stazione locale (true = 1, false = 0)
-        bool st1;
-        bool st2;
-        bool st3;
-        bool st4;
+        bool stb1;          //stb -> standard binary
+        bool stb2;
+        bool stb3;
+        bool stb4;
     
 };
 
