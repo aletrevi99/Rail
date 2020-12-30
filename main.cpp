@@ -1,6 +1,8 @@
 #include <iostream>
 
-#include <Train>
+#include "Train.h"
+#include "Station.h"
+#include "Schedule.h"
 
 int main()
 {
