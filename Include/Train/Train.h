@@ -25,9 +25,6 @@ class Train
         // segnalazione a stazione -20km
         virtual bool signal();
 
-
-
-
     protected:
         // codice del treno
         const int trainCode;

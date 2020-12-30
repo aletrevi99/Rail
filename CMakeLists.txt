@@ -15,10 +15,6 @@ add_library(Train Include/Train/Train.h
         )
 add_library(Station Include/Station/Station.h
         Source/Station/Station.cpp
-        Include/Station/Local_Station.h
-        Source/Station/Local_Station.cpp
-        Include/Station/Principal_Station.h
-        Source/Station/Principal_Station.cpp
         )
 add_library(Schedule Include/Schedule/Schedule.h
         Source/Schedule/Schedule.cpp

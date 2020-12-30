@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Train.h"
+#include <Train>
 
 int main()
 {
