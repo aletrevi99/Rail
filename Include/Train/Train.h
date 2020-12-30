@@ -16,13 +16,17 @@ class Train
         int getMaxSpeed() const;
         int getCurrSpeed() const;
         double getDistance() const;
+        double getDelay() const;
+        bool isDirection() const;
+        int getBinary() const;
+        bool isStopLocal() const;
 
         // setter functions
-        bool isStopLocal() const;
         void setCurrSpeed(int cs);
         void setDistance(double d);
+        void setBinary(int bin);
 
-        // segnalazione a stazione -20km
+        // true se è a meno di 20km dalla stazione, altrimenti false
         virtual bool signal();
 
 
@@ -38,13 +42,15 @@ class Train
         double distance;
         // variabile per indicare se si ferma nelle stazioni locali (solo i treni regionali)
         bool stopLocal;
-        // ritardo accumulato
+        // ritardo accumulato dal treno
         double delay;
-
-
+        // true se va da origine a termine, false se va da termine a origine
+        bool direction;
+        // binario in entrata stazione. 0 se fuori da stazione. 1 se binario 1 o 3. 2 se binario 2 o 4
+        int binary;
 
         // costruttore
-        Train(int tc, int ms);
+        Train(int tc, int ms, bool dir);
         // distruttore di default
         ~Train() = default;
 };
@@ -53,21 +59,21 @@ class Train
 class Regional_Train : public Train
 {
     public:
-        Regional_Train(int tc, int ms) : Train(tc, 160) {};
+        Regional_Train(int tc, int ms, bool dir) : Train(tc, 160, dir) {};
 
 };
 
 class High_Speed_Train : public Train
 {
     public:
-        High_Speed_Train(int tc, int ms) : Train(tc, 240) {};
+        High_Speed_Train(int tc, int ms, bool dir) : Train(tc, 240, dir) {};
 
 };
 
 class Super_High_Speed_Train : public Train
 {
     public:
-        Super_High_Speed_Train(int tc, int ms) : Train(tc, 300) {};
+        Super_High_Speed_Train(int tc, int ms, bool dir) : Train(tc, 300, dir) {};
 
 };
 

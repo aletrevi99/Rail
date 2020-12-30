@@ -21,5 +21,3 @@ add_library(Schedule Include/Schedule/Schedule.h
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Assegnamento2 main.cpp)
-
-target_link_libraries(Assegnamento2 Train Station Schedule)

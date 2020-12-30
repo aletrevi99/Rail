@@ -28,7 +28,7 @@ class Station{
     
     protected:
         Station(std::string n, int d, bool loc)
-            : name {n}, distance {d}, is_Local {loc}, stb1 {true}, stb2 {true}, stb3 {true}, stb4 {true} {}
+            : name {n}, distance {d}, is_Local {loc}, stb1 {true}, stb2 {true}, stb3 {true}, stb4 {true} {};
         ~Station() = default;
     
     private:

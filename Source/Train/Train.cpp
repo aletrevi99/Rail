@@ -2,8 +2,8 @@
 
 #include "Train.h"
 
-Train::Train(int tc, int ms)
-        : trainCode{tc}, maxSpeed{ms}
+Train::Train(int tc, int ms, bool dir)
+        : trainCode{tc}, maxSpeed{ms}, direction{dir}
 {
     if (maxSpeed == 160) stopLocal = true;
     else stopLocal = false;
@@ -58,6 +58,26 @@ void Train::setDistance(double d)
     //     d = maxDistance;
 
     distance = d;
+}
+
+double Train::getDelay() const
+{
+    return delay;
+}
+
+bool Train::isDirection() const
+{
+    return direction;
+}
+
+int Train::getBinary() const
+{
+    return binary;
+}
+
+void Train::setBinary(int bin)
+{
+    binary = bin;
 }
 
 //Alessandro Trevisan 1221819
