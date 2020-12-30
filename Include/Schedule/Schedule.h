@@ -3,27 +3,25 @@
  * n.m. 1216347
  */
 #include<iostream>
+#include<queue>
+#include<fstream>
 #ifndef ASSEGNAMENTO_2_SCHEDULE_H
 #define ASSEGNAMENTO_2_SCHEDULE_H
-struct Entry {
-   
-   int train_number; //numero identificativo del treno
-   int start; //0 se parte da stazione origine, 1 se parte da capolinea
-   int train_type; //0 se regionale, 1 se alta velocità, 2 se alta velocità super
-   vector<int> path; //vector che contiene gli orari delle fermate nelle varie stazioni
-}
+
 class Schedule {
+   
    public:
    //class constructor
-   Schedule(); //dentro deve prendere time tables txt
-   
-   //class destructor
-   ~Schedule();
-   
+   Schedule(); //controlla la validità dei dati e riempie la coda dei treni con i dati di time tables txt
+
+   void print(); //stampa il contenuto della timetable corretta
+   queue<Train> getQueue(); //restituisce la coda dei treni che partono in giornata
    
    private:
-   vector<Entry> timetable;//struttura dati che contiene le varie partenze 
-   int size; //
+   std::queue<Train> q //struttura dati che contiene le varie partenze 
+   int size; //quantità di treni in partenza
+   bool validityCheck(std::string s); //controlla la validità del percorso del treno 
+
 }
 
 #endif //ASSEGNAMENTO_2_SCHEDULE_H
