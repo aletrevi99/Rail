@@ -11,12 +11,7 @@ include_directories(Source/Train
         )
 
 add_library(Train Include/Train/Train.h
-        Include/Train/Regional_Train.h
-        Source/Train/Regional_Train.cpp
-        Include/Train/High_Speed_Train.h
-        Source/Train/High_Speed_Train.cpp
-        Include/Train/Super_High_Speed_Train.h
-        Source/Train/Super_High_Speed_Train.cpp
+        Source/Train/Train.cpp
         )
 add_library(Station Include/Station/Station.h
         Source/Station/Station.cpp
