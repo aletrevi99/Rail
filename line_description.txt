@@ -1,0 +1,10 @@
+Stazione_Origine
+Stazione1 0 100
+Stazione2 1 160
+Stazione3 1 180
+Stazione4 1 220
+Stazione5 0 240
+Stazione6 1 300
+Stazione7 0 390
+Stazione8 1 500
+Stazione9 0 
