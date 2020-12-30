@@ -3,14 +3,10 @@
 #include "Train.h"
 
 Train::Train(int tc, int ms, bool dir)
-        : trainCode{tc}, maxSpeed{ms}, direction{dir}
+        : trainCode{tc}, maxSpeed{ms}, direction{dir}, currSpeed{0}, distance{0}, delay{0}, binary{0}
 {
     if (maxSpeed == 160) stopLocal = true;
     else stopLocal = false;
-
-    currSpeed = 0;
-    distance = 0;
-    delay = 0;
 }
 
 int Train::getTrainCode() const
@@ -78,6 +74,11 @@ int Train::getBinary() const
 void Train::setBinary(int bin)
 {
     binary = bin;
+}
+
+bool operator<(const Train& t1, const Train& t2)
+{
+    return (int)t1.isStopLocal() < (int)t2.isStopLocal();
 }
 
 //Alessandro Trevisan 1221819

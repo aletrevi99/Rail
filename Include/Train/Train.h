@@ -3,7 +3,6 @@
 #ifndef ASSEGNAMENTO_2_TRAIN_H
 #define ASSEGNAMENTO_2_TRAIN_H
 
-
 class Train
 {
     public:
@@ -30,7 +29,6 @@ class Train
         virtual bool signal();
 
 
-
     protected:
         // codice del treno
         const int trainCode;
@@ -46,7 +44,7 @@ class Train
         double delay;
         // true se va da origine a termine, false se va da termine a origine
         bool direction;
-        // binario in entrata stazione. 0 se fuori da stazione. 1 se binario 1 o 3. 2 se binario 2 o 4
+        // binario in entrata stazione. 0 se fuori da stazione. 1 a 4 se binari
         int binary;
 
         // costruttore
@@ -55,6 +53,7 @@ class Train
         ~Train() = default;
 };
 
+bool operator<(const Train& t1, const Train& t2);
 
 class Regional_Train : public Train
 {
