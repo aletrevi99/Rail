@@ -6,9 +6,7 @@
 class Train
 {
     public:
-        // disabilito costruttore di copia e operatore di assegnamento di copia
-        Train(const Train&) = delete;
-        Train& operator=(const Train&) = delete;
+
 
         // getter functions
         int getTrainCode() const;
@@ -19,6 +17,7 @@ class Train
         bool isDirection() const;
         int getBinary() const;
         bool isStopLocal() const;
+        int getType() const;
 
         // setter functions
         void setCurrSpeed(int cs);
@@ -32,14 +31,10 @@ class Train
     protected:
         // codice del treno
         const int trainCode;
-        // velocità massima del treno: 160km\h regionale; 240km\h alta velocità; 300km\h super alta velocità
-        const int maxSpeed;
         // velocità di crociera
         int currSpeed;
         // distanza dalla stazione
         double distance;
-        // variabile per indicare se si ferma nelle stazioni locali (solo i treni regionali)
-        bool stopLocal;
         // ritardo accumulato dal treno
         double delay;
         // true se va da origine a termine, false se va da termine a origine
@@ -47,33 +42,42 @@ class Train
         // binario in entrata stazione. 0 se fuori da stazione. 1 a 4 se binari
         int binary;
 
-        // costruttore
-        Train(int tc, int ms, bool dir);
-        // distruttore di default
-        ~Train() = default;
+        // velocità massima del treno: 160km\h regionale; 240km\h alta velocità; 300km\h super alta velocità
+        int maxSpeed = 0;
+        // variabile per indicare se si ferma nelle stazioni locali (solo i treni regionali)
+        bool stopLocal = false;
+        // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
+        int type = 0;
+
+
+        // costruttori
+        Train() = default;
+        Train(int tc, bool dir);
 };
 
-bool operator<(const Train& t1, const Train& t2);
+// overload operatore < per ordinare i treni a seconda della loro velcità
+bool operator<(const Train&, const Train&);
 
 class Regional_Train : public Train
 {
     public:
-        Regional_Train(int tc, int ms, bool dir) : Train(tc, 160, dir) {};
+        Regional_Train(int tc, bool dir);
+        Regional_Train(Train t)
+        {
 
+        }
 };
 
 class High_Speed_Train : public Train
 {
     public:
-        High_Speed_Train(int tc, int ms, bool dir) : Train(tc, 240, dir) {};
-
+        High_Speed_Train(int tc, bool dir);
 };
 
 class Super_High_Speed_Train : public Train
 {
     public:
-        Super_High_Speed_Train(int tc, int ms, bool dir) : Train(tc, 300, dir) {};
-
+        Super_High_Speed_Train(int tc, bool dir);
 };
 
 #endif //ASSEGNAMENTO_2_TRAIN_H

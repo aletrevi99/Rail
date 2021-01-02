@@ -2,11 +2,30 @@
 
 #include "Train.h"
 
-Train::Train(int tc, int ms, bool dir)
-        : trainCode{tc}, maxSpeed{ms}, direction{dir}, currSpeed{0}, distance{0}, delay{0}, binary{0}
+
+Train::Train(int tc, bool dir)
+        : trainCode{tc}, direction{dir}, currSpeed{0}, distance{0}, delay{0}, binary{0}
 {
-    if (maxSpeed == 160) stopLocal = true;
-    else stopLocal = false;
+
+}
+
+Regional_Train::Regional_Train(int tc, bool dir) : Train(tc, dir)
+{
+    maxSpeed = 160;
+    stopLocal = true;
+    type = 1;
+}
+
+High_Speed_Train::High_Speed_Train(int tc, bool dir) : Train(tc, dir)
+{
+    maxSpeed = 240;
+    type = 2;
+}
+
+Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir) : Train(tc, dir)
+{
+    maxSpeed = 300;
+    type = 3;
 }
 
 int Train::getTrainCode() const
@@ -76,9 +95,14 @@ void Train::setBinary(int bin)
     binary = bin;
 }
 
+int Train::getType() const
+{
+    return type;
+}
+
 bool operator<(const Train& t1, const Train& t2)
 {
-    return (int)t1.isStopLocal() < (int)t2.isStopLocal();
+    return t1.getType() < t2.getType();
 }
 
 //Alessandro Trevisan 1221819
