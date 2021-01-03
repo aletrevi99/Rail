@@ -98,6 +98,16 @@ int Train::getType() const
     return type;
 }
 
+const std::vector<int> &Train::getPath() const
+{
+    return path;
+}
+
+void Train::setPath(const std::vector<int> &p)
+{
+    path = p;
+}
+
 bool operator<(const Train& t1, const Train& t2)
 {
     return t1.getType() < t2.getType();

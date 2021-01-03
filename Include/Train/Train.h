@@ -3,6 +3,8 @@
 #ifndef ASSEGNAMENTO_2_TRAIN_H
 #define ASSEGNAMENTO_2_TRAIN_H
 
+#include "vector"
+
 class Train
 {
     public:
@@ -16,17 +18,22 @@ class Train
         int getBinary() const;
         bool isStopLocal() const;
         int getType() const;
+        const std::vector<int> &getPath() const;
 
         // setter functions
         void setCurrSpeed(int cs);
         void setDistance(double d);
         void setBinary(int bin);
+        void setPath(const std::vector<int> &path);
 
         // true se è a meno di 20km dalla stazione, altrimenti false
         virtual bool signal();
 
 
     protected:
+        // costruttore
+        Train(int tc, bool dir);
+
         // codice del treno
         const int trainCode;
         // velocità di crociera
@@ -39,16 +46,14 @@ class Train
         bool direction;
         // binario in entrata stazione. 0 se fuori da stazione. 1 a 4 se binari
         int binary;
-
         // velocità massima del treno: 160km\h regionale; 240km\h alta velocità; 300km\h super alta velocità
         int maxSpeed = 0;
         // variabile per indicare se si ferma nelle stazioni locali (solo i treni regionali)
         bool stopLocal = false;
         // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
         int type = 0;
-
-        // costruttori
-        Train(int tc, bool dir);
+        // vettore degli orari di arrivo
+        std::vector<int> path;
 };
 
 // overload operatore < per ordinare i treni a seconda della loro velcità
