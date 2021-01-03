@@ -3,24 +3,24 @@
 #include "Train.h"
 
 
-Train::Train(int tc, bool dir)
-        : trainCode{tc}, direction{dir}, currSpeed{0}, distance{0}, delay{0}, binary{0}
+Train::Train(int tc, bool dir, const std::vector<int>& p)
+        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0}, distance{0}, delay{0}, binary{0}
 { }
 
-Regional_Train::Regional_Train(int tc, bool dir) : Train(tc, dir)
+Regional_Train::Regional_Train(int tc, bool dir, const std::vector<int>& p) : Train(tc, dir, p)
 {
     maxSpeed = 160;
     stopLocal = true;
     type = 1;
 }
 
-High_Speed_Train::High_Speed_Train(int tc, bool dir) : Train(tc, dir)
+High_Speed_Train::High_Speed_Train(int tc, bool dir, const std::vector<int>& p) : Train(tc, dir, p)
 {
     maxSpeed = 240;
     type = 2;
 }
 
-Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir) : Train(tc, dir)
+Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir, const std::vector<int>& p) : Train(tc, dir, p)
 {
     maxSpeed = 300;
     type = 3;

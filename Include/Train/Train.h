@@ -26,13 +26,10 @@ class Train
         void setBinary(int bin);
         void setPath(const std::vector<int> &path);
 
-        // true se è a meno di 20km dalla stazione, altrimenti false
-        virtual bool signal();
-
 
     protected:
         // costruttore
-        Train(int tc, bool dir);
+        Train(int tc, bool dir, const std::vector<int>& p);
 
         // codice del treno
         const int trainCode;
@@ -62,19 +59,19 @@ bool operator<(const Train&, const Train&);
 class Regional_Train : public Train
 {
     public:
-        Regional_Train(int tc, bool dir);
+        Regional_Train(int tc, bool dir, const std::vector<int>& p);
 };
 
 class High_Speed_Train : public Train
 {
     public:
-        High_Speed_Train(int tc, bool dir);
+        High_Speed_Train(int tc, bool dir, const std::vector<int>& p);
 };
 
 class Super_High_Speed_Train : public Train
 {
     public:
-        Super_High_Speed_Train(int tc, bool dir);
+        Super_High_Speed_Train(int tc, bool dir, const std::vector<int>& p);
 };
 
 #endif //ASSEGNAMENTO_2_TRAIN_H
