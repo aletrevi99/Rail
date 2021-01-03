@@ -105,20 +105,33 @@ int Train::getMinutes() const
     return minutes;
 }
 
+bool Train::isDeposit() const
+{
+    return deposit;
+}
+
 // setter functions
 void Train::setBinary(int bin)
 {
+
     binary = bin;
 }
 
 void Train::setPath(const std::vector<int> &p)
 {
+    if (p.empty())
+
     path = p;
 }
 
 void Train::setMinutes(int min)
 {
     minutes = min;
+}
+
+void Train::setDeposit(bool dep)
+{
+    deposit = dep;
 }
 
 

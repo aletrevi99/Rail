@@ -20,6 +20,8 @@ class Train
         int getType() const;
         const std::vector<int> &getPath() const;
         int getMinutes() const;
+        bool isDeposit() const;
+
 
         // setter functions
         void setCurrSpeed(int cs);
@@ -27,6 +29,7 @@ class Train
         void setBinary(int bin);
         void setPath(const std::vector<int> &path);
         void setMinutes(int minutes);
+        void setDeposit(bool deposit);
 
 
     protected:
@@ -53,6 +56,8 @@ class Train
         bool stopLocal = false;
         // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
         int type = 0;
+        // variabile per indicare se un treno è nel deposito o no
+        bool deposit = false;
         // vettore degli orari di arrivo
         std::vector<int> path;
 };
