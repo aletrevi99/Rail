@@ -6,8 +6,6 @@
 class Train
 {
     public:
-
-
         // getter functions
         int getTrainCode() const;
         int getMaxSpeed() const;
@@ -49,9 +47,7 @@ class Train
         // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
         int type = 0;
 
-
         // costruttori
-        Train() = default;
         Train(int tc, bool dir);
 };
 
@@ -62,10 +58,6 @@ class Regional_Train : public Train
 {
     public:
         Regional_Train(int tc, bool dir);
-        Regional_Train(Train t)
-        {
-
-        }
 };
 
 class High_Speed_Train : public Train

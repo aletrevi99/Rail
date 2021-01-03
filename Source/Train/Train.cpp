@@ -5,9 +5,7 @@
 
 Train::Train(int tc, bool dir)
         : trainCode{tc}, direction{dir}, currSpeed{0}, distance{0}, delay{0}, binary{0}
-{
-
-}
+{ }
 
 Regional_Train::Regional_Train(int tc, bool dir) : Train(tc, dir)
 {
