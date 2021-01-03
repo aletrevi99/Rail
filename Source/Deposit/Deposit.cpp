@@ -4,56 +4,58 @@
 #include "Deposit.h"
 
 
-void Deposit::addTrain(const Regional_Train& t)
+void Deposit::addTrain(Regional_Train* t)
 {
     rq.push(t);
 }
 
-void Deposit::addTrain(const High_Speed_Train& t)
+void Deposit::addTrain(High_Speed_Train* t)
 {
     hq.push(t);
 }
 
-void Deposit::addTrain(const Super_High_Speed_Train& t)
+void Deposit::addTrain(Super_High_Speed_Train* t)
 {
     sq.push(t);
 }
 
+void Deposit::addATrain(Train* t)
+{
+    pq.push(t);
+}
 
-Train Deposit::removeTrain() // -> decltype(rq.front())
+// coda prioritaria
+Train* Deposit::deleteTrain()
+{
+    Train* tmp = pq.top();
+    pq.pop();
+    return tmp;
+}
+
+// tre code standard
+Train* Deposit::removeTrain()
 {
     if ( sq.empty() )
     {
         if ( hq.empty() )
         {
-            Regional_Train tmp = rq.front();
+            Regional_Train* tmp = rq.front();
             rq.pop();
-            return (Train)tmp;
+            return tmp;
         }
         else
         {
-            High_Speed_Train tmp = hq.front();
+            High_Speed_Train* tmp = hq.front();
             hq.pop();
-            return (Train)tmp;
+            return tmp;
         }
     }
     else
     {
-        Super_High_Speed_Train tmp = sq.front();
+        Super_High_Speed_Train* tmp = sq.front();
         sq.pop();
-        return (Train)tmp;
+        return tmp;
     }
 }
-
-/*
-// probabilmente si può implememtare fuori da deposit
-auto Deposit::getTrain() //-> decltype(removeTrain())
-{
-    Train tmp = removeTrain();
-    if ( tmp.getType() == 1) return (Regional_Train&)tmp;
-    if ( tmp.getType() == 2) return (High_Speed_Train&)tmp;
-    if ( tmp.getType() == 3) return (Super_High_Speed_Train&)tmp;
-}
-*/
 
 //Alessandro Trevisan 1221819
