@@ -45,16 +45,15 @@ Train Deposit::removeTrain() // -> decltype(rq.front())
     }
 }
 
-// probabilmente si può implememtare fuori da deposit o tramite costruttore passando un train
-auto Deposit::getTrain() // -> decltype(removeTrain()).
+/*
+// probabilmente si può implememtare fuori da deposit
+auto Deposit::getTrain() //-> decltype(removeTrain())
 {
     Train tmp = removeTrain();
-    if ( tmp.getType() == 1)
-    {
-        Regional_Train
-    }
-    if ( tmp.getType() == 2) return (High_Speed_Train)tmp;
-    if ( tmp.getType() == 3) return (Super_High_Speed_Train)tmp;
+    if ( tmp.getType() == 1) return (Regional_Train&)tmp;
+    if ( tmp.getType() == 2) return (High_Speed_Train&)tmp;
+    if ( tmp.getType() == 3) return (Super_High_Speed_Train&)tmp;
 }
+*/
 
 //Alessandro Trevisan 1221819

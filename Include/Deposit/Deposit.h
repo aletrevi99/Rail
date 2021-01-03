@@ -16,16 +16,16 @@ class Deposit
         void addTrain(const High_Speed_Train& t);
         void addTrain(const Super_High_Speed_Train& t);
 
+        // ritorna e rimuove il treno (rendendolo temporaneamente generico) più veloce per non creare ingorghi nella ferrovia
+        Train removeTrain();
+
         // cast esplicito del treno appena espulso dal deposito al suo tipo originale
-        auto getTrain();
+        // auto getTrain();
 
     private:
         std::queue<Regional_Train> rq;
         std::queue<High_Speed_Train> hq;
         std::queue<Super_High_Speed_Train> sq;
-
-        // ritorna e rimuove il treno (rendendolo temporaneamente generico) più veloce per non creare ingorghi nella ferrovia
-        Train removeTrain();
 };
 
 #endif //ASSEGNAMENTO2_DEPOSIT_H
