@@ -2,9 +2,9 @@
 
 #include "Train.h"
 
-
+// cosrtuttori
 Train::Train(int tc, bool dir, const std::vector<int>& p)
-        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0}, distance{0}, delay{0}, binary{0}
+        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0}, distance{0}, minutes{0}, delay{0}, binary{0}
 { }
 
 Regional_Train::Regional_Train(int tc, bool dir, const std::vector<int>& p) : Train(tc, dir, p)
@@ -25,6 +25,7 @@ Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir, const std::vect
     maxSpeed = 300;
     type = 3;
 }
+
 
 int Train::getTrainCode() const
 {
@@ -73,6 +74,7 @@ void Train::setDistance(double d)
     distance = d;
 }
 
+// getter functions
 double Train::getDelay() const
 {
     return delay;
@@ -88,11 +90,6 @@ int Train::getBinary() const
     return binary;
 }
 
-void Train::setBinary(int bin)
-{
-    binary = bin;
-}
-
 int Train::getType() const
 {
     return type;
@@ -103,10 +100,27 @@ const std::vector<int> &Train::getPath() const
     return path;
 }
 
+int Train::getMinutes() const
+{
+    return minutes;
+}
+
+// setter functions
+void Train::setBinary(int bin)
+{
+    binary = bin;
+}
+
 void Train::setPath(const std::vector<int> &p)
 {
     path = p;
 }
+
+void Train::setMinutes(int min)
+{
+    minutes = min;
+}
+
 
 bool operator<(const Train& t1, const Train& t2)
 {

@@ -19,12 +19,14 @@ class Train
         bool isStopLocal() const;
         int getType() const;
         const std::vector<int> &getPath() const;
+        int getMinutes() const;
 
         // setter functions
         void setCurrSpeed(int cs);
         void setDistance(double d);
         void setBinary(int bin);
         void setPath(const std::vector<int> &path);
+        void setMinutes(int minutes);
 
 
     protected:
@@ -37,6 +39,8 @@ class Train
         int currSpeed;
         // distanza dalla stazione
         double distance;
+        // tempo trascorso dalla partenza
+        int minutes;
         // ritardo accumulato dal treno
         double delay;
         // true se va da origine a termine, false se va da termine a origine
