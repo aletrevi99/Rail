@@ -26,54 +26,6 @@ Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir, const std::vect
     type = 3;
 }
 
-
-int Train::getTrainCode() const
-{
-    return trainCode;
-}
-
-int Train::getMaxSpeed() const
-{
-    return maxSpeed;
-}
-
-int Train::getCurrSpeed() const
-{
-    return currSpeed;
-}
-
-double Train::getDistance() const
-{
-    return distance;
-}
-
-bool Train::isStopLocal() const
-{
-    return stopLocal;
-}
-
-void Train::setCurrSpeed(int cs)
-{
-    if (cs > maxSpeed)
-        currSpeed = maxSpeed;
-
-    if (cs < 0)
-        currSpeed = 0;
-
-    currSpeed = cs;
-}
-
-void Train::setDistance(double d)
-{
-    if (d < 0)
-        distance = 0;
-
-    // if (d > maxDistance)
-    //     d = maxDistance;
-
-    distance = d;
-}
-
 // getter functions
 double Train::getDelay() const
 {
@@ -115,11 +67,56 @@ int Train::getPassedStations() const
     return passedStations;
 }
 
+int Train::getTrainCode() const
+{
+    return trainCode;
+}
+
+int Train::getMaxSpeed() const
+{
+    return maxSpeed;
+}
+
+int Train::getCurrSpeed() const
+{
+    return currSpeed;
+}
+
+double Train::getDistance() const
+{
+    return distance;
+}
+
+bool Train::isStopLocal() const
+{
+    return stopLocal;
+}
+
 // setter functions
+void Train::setCurrSpeed(int cs)
+{
+    if (cs < 0 || cs > maxSpeed)
+        throw std::length_error("La velocità di crociera non può essere negativa. Imposta un valore positivo.\n");
+    else if (cs > maxSpeed)
+        throw std::length_error(
+                "La velocità di crociera non può essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
+    else
+        currSpeed = cs;
+}
+
+void Train::setDistance(double d)
+{
+    if (d < 0)
+        throw std::length_error(
+                "La distanza del treno dalla stazione d'origine non può essere negativa. Imposta un valore positivo.\n");
+    else
+        distance = d;
+}
+
 void Train::setBinary(int bin)
 {
-    if (bin < 1 || bin > 4)
-        throw std::length_error("Binanario non esitente.\n");
+    if (bin < 0 || bin > 5)
+        throw std::length_error("Il binario selezionato non esiste. Imposta un binario fra 0 e 5, estremi compresi.\n");
     else
         binary = bin;
 }
@@ -127,7 +124,7 @@ void Train::setBinary(int bin)
 void Train::setPath(const std::vector<int> &p)
 {
     if (p.empty())
-        throw std::invalid_argument("Vettore degli orari di arrivo vuoto.\n");
+        throw std::invalid_argument("Il vettore degli orari di arrivo risulta vuoto. Riempilo.\n");
     else
         path = p;
 }
@@ -135,7 +132,10 @@ void Train::setPath(const std::vector<int> &p)
 void Train::setMinutes(int min)
 {
     if (min < 0)
-    minutes = min;
+        throw std::length_error(
+                "Il tempo trascorso dalla partenza non può essere negativo. Imposta un valore positivo.\n");
+    else
+        minutes = min;
 }
 
 void Train::setDeposit(bool dep)
@@ -145,10 +145,13 @@ void Train::setDeposit(bool dep)
 
 void Train::setPassedStations(int ps)
 {
-    passedStations = ps;
+    if (ps < 0)
+        throw std::length_error("Il numero della stazioni passate non può essere negativo.\n");
+    else
+        passedStations = ps;
 }
 
-
+// overload operatori
 bool operator<(const Train &t1, const Train &t2)
 {
     return t1.getType() < t2.getType();
@@ -169,7 +172,7 @@ std::ostream &operator<<(std::ostream &os, const Train &obj)
     if (obj.getBinary() == 1 || obj.getBinary() == 3) os << "viaggia a " << obj.getCurrSpeed() << "km/h nel binario 1 ";
     if (obj.getBinary() == 2 || obj.getBinary() == 4) os << "viaggia a " << obj.getCurrSpeed() << "km/h nel binario 2 ";
     if (obj.getDelay() >= 0) os << "è in ritardo di " << obj.getDelay() << " minuti.";
-    if (obj.getDelay() == 0) os << "è in orario.";
+    if (obj.getDelay() == 0) os << "è in orario.\n";
 
     return os;
 }

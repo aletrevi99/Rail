@@ -6,7 +6,7 @@
 #include <iostream>
 #include "vector"
 
-
+// classe Treno base
 class Train
 {
     public:
@@ -86,11 +86,13 @@ class Train
         std::vector<int> path;
 };
 
-// overload operatore < per ordinare i treni a seconda della loro velcità
+// overload operatore < per confrontare i treni a seconda della loro velcità
 bool operator<(const Train &, const Train &);
-// overload operatore << per stampare un treno
-std::ostream& operator<<(std::ostream&, const Train&);
 
+// overload operatore << per stampare un treno
+std::ostream &operator<<(std::ostream &, const Train &);
+
+// classi Treno derivate
 class Regional_Train : public Train
 {
     public:
