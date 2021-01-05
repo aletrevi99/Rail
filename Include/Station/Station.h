@@ -15,8 +15,7 @@
 class Station{
     
     public:
-        Station(const Station&) = delete;
-        Station& operator =(const Station&) = delete;
+        //non messo costruttore ed assegnamento di copia
         
         std::string get_Station_name() const {return name;};
         int get_Station_distance() const {return distance;};
@@ -25,17 +24,23 @@ class Station{
         bool get_stb2_status() const {return stb2;};
         bool get_stb3_status() const {return stb3;};
         bool get_stb4_status() const {return stb4;};
+        
+        int set_Station_distance(int d) {distance = d;};
+        bool set_stb1_status(bool s) {stb1 = s;};
+        bool set_stb2_status(bool s) {stb2 = s;};
+        bool set_stb3_status(bool s) {stb3 = s;};
+        bool set_stb4_status(bool s) {stb4 = s;};
     
     protected:
         Station(std::string n, int d, bool loc)
             : name {n}, distance {d}, is_Local {loc}, stb1 {true}, stb2 {true}, stb3 {true}, stb4 {true} {};
-        ~Station() = default;
+        //tolto il distruttore
     
     private:
         std::string name;
         int distance;
         bool is_Local;      //is_Local = true -> stazione locale (true = 1, false = 0)
-        bool stb1;          //stb -> standard binary
+        bool stb1;          //stb -> standard binary, ture  = binario libero
         bool stb2;
         bool stb3;
         bool stb4;
