@@ -21,13 +21,12 @@ class Rail{
     public:
         Rail(std::vector<Station> s, std::vector<Train> t);
         ~Rail() = default;
-        void simulation(std::vector<Station>& s, std::vector<Train>& t);
+        void simulation(std::vector<Station>& st, std::vector<Train>& t);
     
     private:
         int ns;                                 //number of stations
         int nt;                                 //number of trains
         const int CROSSING_TIME = 4;            //tempo per fare 5 km a 80 km/h (approssimato)
-        std::vector<int> st_p;                  //vettore contenente tutte e sole le st. principali (i loro indici per indentificarne la posizione nel vector)
         void change_v(Train& t, int v);         //cambia istantaneamente la velocità del treno
         int get_minutes(Train& t, double d);       //quanti minuti ci mette un treno per percorrere una certa distanza
         int get_km(Train& t, double m);            //quanti km percorre un treno in m minuti

@@ -99,13 +99,13 @@ int main(){
     Local_Station s8 ("Altavilla", 250);
     Principal_Station s9 ("Vicenza", 300);
     
-    vector<int> ot1 = {0, 13, 31};
+    vector<int> ot1 = {0, 41, 93};
     vector<int> ot2 = {10, 26, 47, 71, 95, 119, 143, 164, 192};
-    vector<int> ot3 = {0, 18, 36};
+    vector<int> ot3 = {100, 138, 177};
     
     High_Speed_Train t1 (1, true, ot1);
     Regional_Train t2 (2, true, ot2);
-    High_Speed_Train t3 (3, false, ot3);
+    Super_High_Speed_Train t3 (3, false, ot3);
     
     stations.push_back(s1);
     stations.push_back(s2);
