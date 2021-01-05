@@ -92,6 +92,11 @@ bool Train::isStopLocal() const
     return stopLocal;
 }
 
+int Train::getStatus() const
+{
+    return status;
+}
+
 // setter functions
 void Train::setCurrSpeed(int cs)
 {
@@ -146,9 +151,16 @@ void Train::setDeposit(bool dep)
 void Train::setPassedStations(int ps)
 {
     if (ps < 0)
-        throw std::length_error("Il numero della stazioni passate non può essere negativo.\n");
+        throw std::length_error("Il numero della stazioni passate non può essere negativo.Imposta un valore positivo.\n");
     else
         passedStations = ps;
+}
+
+void Train::setStatus(int st)
+{
+    if (st < 0 || st > 4)
+        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 4, estremi compresi.\n");
+    status = st;
 }
 
 // overload operatori

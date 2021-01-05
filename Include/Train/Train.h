@@ -37,6 +37,8 @@ class Train
 
         int getPassedStations() const;
 
+        int getStatus() const;
+
 
         // setter functions
         void setCurrSpeed(int cs);
@@ -52,6 +54,8 @@ class Train
         void setDeposit(bool deposit);
 
         void setPassedStations(int passedStations);
+
+        void setStatus(int status);
 
 
     protected:
@@ -82,6 +86,8 @@ class Train
         bool deposit = false;
         // numero stazioni attraversate
         int passedStations = 0;
+        // 0 se treno deve partire/arrivare al binario , 1 se deve lasciare il binario, 2 se deve uscire ai 5km, 3 se deve segnalare, 4 se deve entrare ai 5km
+        int status = 0;
         // vettore degli orari di arrivo
         std::vector<int> path;
 };
