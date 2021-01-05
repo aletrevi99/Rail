@@ -171,7 +171,19 @@ bool operator<(const Train &t1, const Train &t2)
 
 std::ostream &operator<<(std::ostream &os, const Train &obj)
 {
-    os << "Il treno ";
+   os << obj.getTrainCode()<<" ";
+   int dir = 0;
+   if(!obj.isDirection())
+      dir = 1;
+   os << dir << " ";
+   os << obj.getType() <<" ";
+   std::vector<int> tmp = obj.getPath();
+   for(int i = 0; i < tmp.size(); i++)
+      os << tmp[i] <<" ";
+   
+   
+   /*
+    * 
     if (obj.getType() == 1) os << "Regionale ";
     if (obj.getType() == 2) os << "Alta Velocità ";
     if (obj.getType() == 3) os << "Super Alta Velocità ";
@@ -185,7 +197,7 @@ std::ostream &operator<<(std::ostream &os, const Train &obj)
     if (obj.getBinary() == 2 || obj.getBinary() == 4) os << "viaggia a " << obj.getCurrSpeed() << "km/h nel binario 2 ";
     if (obj.getDelay() >= 0) os << "è in ritardo di " << obj.getDelay() << " minuti.";
     if (obj.getDelay() == 0) os << "è in orario.\n";
-
+   */
     return os;
 }
 
