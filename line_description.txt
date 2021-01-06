@@ -1,9 +1,9 @@
-Station1 0 100
-Station2 1 160
-Station3 1 180
-Station4 1 220
-Station5 0 240
-Station6 1 300
-Station7 0 390
-Station8 1 500
-Station9 0
+Verona P.N. 0 0
+Verona P.V. 1 30
+S.M.B. Albergo 1 60
+Caldiero 1 100
+San Bonifacio 0 140
+Lonigo 1 180
+Montebello 1 220
+Altavilla 1 250
+Vicenza 0 300
