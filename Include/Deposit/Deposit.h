@@ -5,6 +5,8 @@
 
 #include <queue>
 
+#include "Train.h"
+
 class Deposit
 {
     public:
