@@ -1,3 +1,5 @@
+# Alessandro Trevisan 1221819
+
 project(Assegnamento2)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
@@ -31,3 +33,5 @@ add_library(Rail Include/Rail/Rail.h
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Assegnamento2 main.cpp)
+
+# Alessandro Trevisan 1221819
