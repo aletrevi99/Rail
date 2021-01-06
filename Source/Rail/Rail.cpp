@@ -8,10 +8,6 @@
 */
 
 #include "Rail.h"
-#include <Math.h>
-
-#include <iterator>
-#include <algorithm>
 
 using namespace std;
 

@@ -47,7 +47,7 @@ int Train::getType() const
     return type;
 }
 
-const std::vector<int> &Train::getPath() const
+std::vector<int> Train::getPath() const
 {
     return path;
 }
@@ -126,7 +126,7 @@ void Train::setBinary(int bin)
         binary = bin;
 }
 
-void Train::setPath(const std::vector<int> &p)
+void Train::setPath(std::vector<int> &p)
 {
     if (p.empty())
         throw std::invalid_argument("Il vettore degli orari di arrivo risulta vuoto. Riempilo.\n");
@@ -178,12 +178,11 @@ std::ostream &operator<<(std::ostream &os, const Train &obj)
    os << dir << " ";
    os << obj.getType() <<" ";
    std::vector<int> tmp = obj.getPath();
-   for(int i = 0; i < tmp.size(); i++)
-      os << tmp[i] <<" ";
+   for(int i : tmp)
+      os << i <<" ";
    
    
    /*
-    * 
     if (obj.getType() == 1) os << "Regionale ";
     if (obj.getType() == 2) os << "Alta Velocità ";
     if (obj.getType() == 3) os << "Super Alta Velocità ";

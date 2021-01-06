@@ -7,14 +7,20 @@
  * Data di creazione: 30/12/2020
 */
 
+#ifndef ASSEGNAMENTO_2_RAIL_H
+#define ASSEGNAMENTO_2_RAIL_H
+
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <cmath>
+#include <iterator>
+#include <algorithm>
 
 #include "Station.h"
 #include "Train.h"
 #include "Deposit.h"
-//#include "Schedule.h"
+#include "Data.h"
 
 class Rail{
     
@@ -35,5 +41,6 @@ class Rail{
         void train_departure(Train& t);         //velocità treno = 80
         void station_entry(Train& t, Station& s);
         void station_exit(Train& t, Station& s);
-    
 };
+
+#endif //ASSEGNAMENTO_2_RAIL_H

@@ -1,13 +1,5 @@
 #include "Data.h"
 
-#include <stdexcept>
-#include <string>
-#include <sstream> 
-#include <fstream>
-#include <cmath>
-#include <iterator>
-#include <algorithm>
-
 using namespace std;
 //costruttore
 Data::Data() {
@@ -52,10 +44,10 @@ void Data::readStations(){
    ifstream file;
    file.open("C:/LDP/LDP/TrainLine/line_description.txt");
    if(file.is_open())
-   cout<<":)"<<endl;
-   string line = "";
+       cout<<":)"<<endl;
+   string line;
    
-   string name_station = "";
+   string name_station;
    int type_station = 0;
    int distance = 0;
    int previous_distance = 0;
@@ -68,18 +60,18 @@ void Data::readStations(){
    number_of_principal_stations++;
    while(getline(file,line)){
       
-      name_station = line.substr(0, line.rfind(" ") - 2);
-      type_station = stoi(line.substr(line.rfind(" ") - 1,1));
+      name_station = line.substr(0, line.rfind(' ') - 2);
+      type_station = stoi(line.substr(line.rfind(' ') - 1,1));
       
       if(!((type_station == 0)||(type_station == 1)))
          throw exception();
          
-      distance = stoi(line.substr(line.rfind(" ") + 1));
+      distance = stoi(line.substr(line.rfind(' ') + 1));
       
        if((distance <= 0)||((distance - previous_distance) < 0))
           throw exception();
          
-      if(!((distance - previous_distance) < 20)){ 
+      if((distance - previous_distance) >= 20){
          
          if(type_station == 0) { 
             Principal_Station sp(name_station,distance);
@@ -109,7 +101,7 @@ void Data::readTrains(){
    ifstream file;
    file.open("C:/LDP/LDP/TrainLine/timetables.txt");
    if(file.is_open())
-   cout<<":)"<<endl;
+       cout<<":)"<<endl;
    string line;
    int train_code;
    int train_type;
@@ -174,7 +166,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations + number_of_local_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10.0/80) * 60));
             time = p[i] - p[i - 1];
             if(min_time >= time) {
                p[i] = p[i - 1] + min_time + 10;
@@ -182,7 +174,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
             }
          }   
          else{
-            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10/80) * 60)) + 10 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10.0/80) * 60)) + 10 + p.back();
             p.push_back(min_time);
             flag = true;
          } 
@@ -196,14 +188,14 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10.0/80) * 60));
             if(min_time >= (p[i] - p[i - 1])){
                p[i] = p[i - 1] + min_time + 10;
                flag = true; 
             }
          }  
          else {
-            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10/80) * 60)) + 10 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10.0/80) * 60)) + 10 + p.back();
             p.push_back(min_time);
             flag = true;
          } 
@@ -220,14 +212,14 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10.0/80) * 60));
             if(min_time >= (p[i] - p[i - 1])) {
                p[i] = p[i - 1] + min_time + 10;
                flag = true;  
             }
          }
          else{
-            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10/80) * 60)) + 10 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10.0/80) * 60)) + 10 + p.back();
             p.push_back(min_time);
             flag = true;
          } 

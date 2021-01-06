@@ -29,7 +29,7 @@ class Train
 
         int getType() const;
 
-        const std::vector<int> &getPath() const;
+        std::vector<int> getPath() const;
 
         int getMinutes() const;
 
@@ -47,7 +47,7 @@ class Train
 
         void setBinary(int bin);
 
-        void setPath(const std::vector<int> &path);
+        void setPath(std::vector<int> &path);
 
         void setMinutes(int minutes);
 
