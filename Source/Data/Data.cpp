@@ -32,17 +32,17 @@ void Data::print(){
       cout << tr[i] << endl;
 }
 
-vector<Train>& Data::getTrains() const{
+vector<Train>& Data::getTrains(){
    return tr;
 }
 
-vector<Station>& Data::getStation() const{
+vector<Station>& Data::getStation(){
    return st;
 }
-vector<int>& Data::getDistances() const{
+vector<int>& Data::getDistances() {
    return distances;
 }
-vector<int>& Data::getPrincipalDistances() const{
+vector<int>& Data::getPrincipalDistances(){
    return principal_distances;
 }
 //metodi privati
@@ -50,8 +50,7 @@ vector<int>& Data::getPrincipalDistances() const{
 void Data::readStations(){
    
    ifstream file;
-   file.open("C:/LDP/LDP/TrainLine/line_description.txt");
-   if(file.is_open())
+   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova4/line_description.txt");
   
    string line;
    
@@ -107,8 +106,7 @@ void Data::readStations(){
 void Data::readTrains(){
    
    ifstream file;
-   file.open("C:/LDP/LDP/TrainLine/timetables.txt");
-   if(file.is_open())
+   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova4/timetables.txt");
    
    string line;
    int train_code;

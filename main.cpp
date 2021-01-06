@@ -85,7 +85,7 @@ int main(){
     Rail r (stations, trains);
     r.simulation(stations, trains);*/
     
-    
+    /*
     vector<Station> stations;
     vector<Train> trains;
     
@@ -119,10 +119,10 @@ int main(){
     
     trains.push_back(t1);
     trains.push_back(t2);
-    trains.push_back(t3);
+    trains.push_back(t3);*/
     
-    Rail r (stations, trains);
-    r.simulation(stations, trains);
+    Rail r;
+    r.simulation();
     
     
     

@@ -8,17 +8,20 @@
 */
 
 #include "Rail.h"
+#include <Math.h>
+
+#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
-Rail::Rail(vector<Station> s, vector<Train> t){
-    /*
-    Schedule s();
-    vector<Station> stations = s.getStations();
-    queue<Train> trains = s.getTrains();
-    */
+Rail::Rail(){
     
-    ns = s.size();
+    Data d;
+    st = d.getStation();
+    t = d.getTrains();
+    
+    ns = st.size();
     nt = t.size();
     
 }
@@ -40,7 +43,6 @@ int Rail::get_km(Train& t, double m){
 }
 
 void Rail::get_station_binary(Train& t, Station& s){        //da usare a 20km dalla stazione quando treno manda segnalazione
-    
     if(t.isDirection()){
         if(s.get_stb1_status()){
             t.setBinary(1);
@@ -62,16 +64,10 @@ void Rail::get_station_binary(Train& t, Station& s){        //da usare a 20km da
             }
         }
     }
-    
-    //new
     t.setStatus(4);
-    
 }
 
 void Rail::train_arrival(Train& t, Station& s){
-    //change_v(t, 0);
-    
-    //new
     if(t.getPassedStations() == 0){
         get_station_binary(t, s);
     }
@@ -80,17 +76,12 @@ void Rail::train_arrival(Train& t, Station& s){
         t.setMinutes(t.getMinutes() + 5);
     }
     t.setStatus(1);
-    
 }
 
 void Rail::train_departure(Train& t){
-    //t.setCurrSpeed(80);
-    
-    //new
     t.setCurrSpeed(80);
     t.setMinutes(t.getMinutes() + CROSSING_TIME);
     t.setStatus(2);
-    
 }
 
 void Rail::station_entry(Train& t, Station& s){
@@ -117,11 +108,8 @@ void Rail::station_entry(Train& t, Station& s){
             }
         }
     }
-    
-    //new
     t.setMinutes(t.getMinutes() + CROSSING_TIME);
     t.setStatus(0);
-    
 }
 
 void Rail::station_exit(Train& t, Station& s){
@@ -145,18 +133,13 @@ void Rail::station_exit(Train& t, Station& s){
             }
         }
     }
-    
-    //new
     t.setPassedStations(t.getPassedStations() + 1);
-    //int m = get_minutes(t, s.get_Station_distance() !!!!!! );
-    //t.setMinutes(t.getMinutes() + m);
     t.setStatus(3);
-    
 }
 
-void Rail::simulation(vector<Station>& st, vector<Train>& t){
+void Rail::simulation(){
     cout << "START\n";
-    for(int i=0; i<1440; i++){
+    for(int i=0; i<3000; i++){
         for(int tr=0; tr<nt; tr++){
             
             vector<Station> s = st;
@@ -172,22 +155,23 @@ void Rail::simulation(vector<Station>& st, vector<Train>& t){
             for(int j=0; j<orari.size(); j++){
                                 
                 //treno arriva al binario
-                if(orari[j] == i && t[tr].getStatus() == 0 && i == orari[0] + t[tr].getMinutes()){
+                if(orari[j] == i && t[tr].getStatus() == 0 /*&& i == orari[0] + t[tr].getMinutes()*/){
                     train_arrival(t[tr], s[t[tr].getPassedStations()]);
                     cout << "Al minuto " << i << " il treno " << t[tr].getTrainCode() << " arriva al binario " << t[tr].getBinary() << " della stazione di " << s[t[tr].getPassedStations()].get_Station_name() << ".\n";
                     if(t[tr].getPassedStations() == ns-1 || j == orari.size()-1){
                         cout << "Al minuto " << i << " il treno " << t[tr].getTrainCode() << " conclude la sua corsa alla stazione di " << s[t[tr].getPassedStations()].get_Station_name() << ".\n";
+                        t[tr].setStatus(6); //stato 6 = treno ha 
                     }
                 }else{
                     
                     //treno lascia il binario
-                    if(t[tr].getStatus() == 1 && i == orari[0] + t[tr].getMinutes()){
+                    if(t[tr].getStatus() == 1 /*&& i == orari[0] + t[tr].getMinutes()*/){
                         train_departure(t[tr]);
                         cout << "Al minuto " << i << " il treno " << t[tr].getTrainCode() << " parte dal binario " << t[tr].getBinary() << " della stazione di " << s[t[tr].getPassedStations()].get_Station_name() << ".\n";
                     }else{
                         
                         //uscita di un treno da una stazione (dopo 5km)
-                        if(t[tr].getStatus() == 2 && i == orari[0] + t[tr].getMinutes()){
+                        if(t[tr].getStatus() == 2 /*&& i == orari[0] + t[tr].getMinutes()*/){
                             cout << "Al minuto " << i << " il treno " << t[tr].getTrainCode() << " lascia il binario " << t[tr].getBinary() << " della stazione di " << s[t[tr].getPassedStations()].get_Station_name() << ".\n";
                             station_exit(t[tr], s[t[tr].getPassedStations()]);
                             
@@ -198,10 +182,10 @@ void Rail::simulation(vector<Station>& st, vector<Train>& t){
                             
                             //treno segna ad una stazione il suo arrivo
                             int l = get_minutes(t[tr], 15);
-                            if(t[tr].getStatus() == 3 && i == orari[0] + t[tr].getMinutes() -l){
+                            if(t[tr].getStatus() == 3 /*&& i == orari[0] + t[tr].getMinutes() -l*/){
                                 
                                 //se il treno non è regionale e la stazione non è locale, il treno non si ferma
-                                if(t[tr].isStopLocal() == 0 && s[t[tr].getPassedStations()].get_Station_type() == 1){
+                                if((!(t[tr].isStopLocal())) && (s[t[tr].getPassedStations()].get_Station_type())){
                                     int u = get_minutes(t[tr], s[t[tr].getPassedStations()+1].get_Station_distance() - s[t[tr].getPassedStations()].get_Station_distance());
                                     t[tr].setMinutes(t[tr].getMinutes() + u);
                                     t[tr].setStatus(3);
@@ -214,7 +198,7 @@ void Rail::simulation(vector<Station>& st, vector<Train>& t){
                             }else{
                                 
                                 //arrivo di un treno alla stazione (ai -5km)
-                                if(t[tr].getStatus() == 4 && i == orari[0] + t[tr].getMinutes()){
+                                if(t[tr].getStatus() == 4 /*&& i == orari[0] + t[tr].getMinutes()*/){
                                     if(t[tr].getBinary() != 5){
                                         station_entry(t[tr], s[t[tr].getPassedStations()]);
                                         cout << "Al minuto " << i << " il treno " << t[tr].getTrainCode() << " entra nel binario " << t[tr].getBinary() << " della stazione di " << s[t[tr].getPassedStations()].get_Station_name() << ".\n";

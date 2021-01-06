@@ -63,7 +63,7 @@ class Train
         Train(int tc, bool dir, const std::vector<int> &p);
 
         // codice del treno
-        const int trainCode;
+        int trainCode;
         // velocità di crociera
         int currSpeed;
         // distanza dalla stazione

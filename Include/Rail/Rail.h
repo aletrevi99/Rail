@@ -7,29 +7,25 @@
  * Data di creazione: 30/12/2020
 */
 
-#ifndef ASSEGNAMENTO_2_RAIL_H
-#define ASSEGNAMENTO_2_RAIL_H
-
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <cmath>
-#include <iterator>
-#include <algorithm>
 
-#include "Station.h"
-#include "Train.h"
+//#include "Station.h"
+//#include "Train.h"
 #include "Deposit.h"
 #include "Data.h"
 
 class Rail{
     
     public:
-        Rail(std::vector<Station> s, std::vector<Train> t);
+        Rail();
         ~Rail() = default;
-        void simulation(std::vector<Station>& st, std::vector<Train>& t);
+        void simulation();
     
     private:
+        std::vector<Station> st;
+        std::vector<Train> t;
         int ns;                                 //number of stations
         int nt;                                 //number of trains
         const int CROSSING_TIME = 4;            //tempo per fare 5 km a 80 km/h (approssimato)
@@ -41,6 +37,5 @@ class Rail{
         void train_departure(Train& t);         //velocità treno = 80
         void station_entry(Train& t, Station& s);
         void station_exit(Train& t, Station& s);
+    
 };
-
-#endif //ASSEGNAMENTO_2_RAIL_H

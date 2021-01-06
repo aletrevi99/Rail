@@ -158,8 +158,8 @@ void Train::setPassedStations(int ps)
 
 void Train::setStatus(int st)
 {
-    if (st < 0 || st > 4)
-        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 4, estremi compresi.\n");
+    if (st < 0 || st > 6)
+        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 6, estremi compresi.\n");
     status = st;
 }
 

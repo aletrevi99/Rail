@@ -19,10 +19,10 @@ class Data {
    void print(); //stampa il contenuto della timetable corretta
    //std::vector<Train*> getTrainsReference() const; //restituisce la dei treni che partono in giornata
    //std::vector<Station*> getStationsReference() const; //restituisce un vettore con le stazioni
-   std::vector<Train>& getTrains() const;
-   std::vector<Station>& getStation() const;
-   std::vector<int>& getDistances(bool reverse) const;
-   std::vector<int>& getPrincipalDistances(bool reverse) const;
+   std::vector<Train>& getTrains();
+   std::vector<Station>& getStation();
+   std::vector<int>& getDistances();
+   std::vector<int>& getPrincipalDistances();
    
    private:
    std::vector<Train> tr; //struttura dati che contiene i treni in partenza
