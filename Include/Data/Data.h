@@ -39,6 +39,7 @@ class Data {
    void readStations(); //legge le stazioni dal file line_description.txt e le salva in st
    void readTrains();  //legge i treni dal file timetables.txt e li salva in tr
    void pathChecker(std::vector<int>& p, int t,int dir);
+   void sort();
 };
 
 #endif //ASSEGNAMENTO_2_DATA_H
