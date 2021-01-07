@@ -19,7 +19,7 @@ Data::Data() {
    flag = false;
    readStations();
    readTrains();
-
+   sort();
    if(flag)
       print();
 }
@@ -258,4 +258,20 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
    }
 }  
 
+void Data::sort(){
+   
+   int min = 0;
+   for(int i=0; i < tr.size(); i++)
+   {
+      min = i;
+
+      for(int j=i+1; j < tr.size(); j++)
+      if(tr[j].isFirst(tr[min])) 
+         min = j;
+
+      Train tmp = tr[min];
+      tr[min]=tr[i];
+      tr[i]=tmp;
+   }
+}
 
