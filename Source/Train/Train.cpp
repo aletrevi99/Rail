@@ -163,6 +163,12 @@ void Train::setStatus(int st)
     status = st;
 }
 
+
+bool Train::isFirst(Train& t)
+{
+    return ((path[0]) < (t.getPath()[0]));
+}
+
 // overload operatori
 bool operator<(const Train &t1, const Train &t2)
 {
