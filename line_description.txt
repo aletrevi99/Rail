@@ -7,3 +7,7 @@ Lonigo 1 180
 Montebello 1 220
 Altavilla 1 250
 Vicenza 0 300
+Lerino 1 330
+Grisignano Di Zocco 1 360
+Mestrino 1 400
+Padova 0 450
