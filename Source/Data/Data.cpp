@@ -50,8 +50,9 @@ vector<int>& Data::getPrincipalDistances(){
 void Data::readStations(){
    
    ifstream file;
-   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova4/line_description.txt");
-  
+   file.open("C://LDP/LDP/TrainLine/line_description.txt");
+   if(file.is_open())
+      cout<<":)"<<endl;
    string line;
    
    string name_station;
@@ -106,13 +107,15 @@ void Data::readStations(){
 void Data::readTrains(){
    
    ifstream file;
-   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova4/timetables.txt");
-   
+  file.open("C://LDP/LDP/TrainLine/timetables.txt");
+   if(file.is_open())
+      cout<<":)"<<endl;
    string line;
    int train_code;
    int train_type;
    int train_direction;
    int min;
+   int n = 0;
    vector<int> path;
    
    while(getline(file,line)){
@@ -122,17 +125,27 @@ void Data::readTrains(){
          ss >> train_code; 
          ss >> train_direction;
          ss >> train_type;
+         
+         if(!((train_type == 1) || (train_type == 2) || (train_type == 3)))
+         throw exception(); 
+         
+            n = number_of_principal_stations;
+         if(train_type == 1)
+            n =+ number_of_local_stations;
+         
          while(!ss.eof()){
             ss >> min;
             path.push_back(min);
          }
       }
+      
+      if(n < path.size())
+        path.resize(n);
+      
       //controlli su tipo nome e campo
       if(!((train_direction == 0) || (train_direction == 1)))
          throw exception();
       
-      if(!((train_type == 1) || (train_type == 2) || (train_type == 3)))
-         throw exception(); 
 
       bool direction = false;
       if(train_direction == 0)
@@ -183,6 +196,8 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
          }   
          else{
             min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + (((double) 10/80) * 60)) + 15 + p.back();
+            if(i == 1)
+               min_time = min_time - 5;
             p.push_back(min_time);
             flag = true;
          } 
@@ -206,6 +221,8 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
          }  
          else {
             min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + (((double)10/80) * 60)) + 15 + p.back();
+            if(i == 1)
+               min_time = min_time - 5;
             p.push_back(min_time);
             flag = true;
          } 
@@ -232,6 +249,8 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
          }
          else{
             min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + (((double)10/80) * 60)) + 15 + p.back();
+            if(i == 1)
+               min_time = min_time - 5;
             p.push_back(min_time);
             flag = true;
          } 
