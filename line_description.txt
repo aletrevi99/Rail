@@ -1,13 +1,11 @@
-Verona P.N. 0 0
-Verona P.V. 1 30
-S.M.B. Albergo 1 60
-Caldiero 1 100
-San Bonifacio 0 140
-Lonigo 1 180
-Montebello 1 220
-Altavilla 1 250
-Vicenza 0 300
-Lerino 1 330
-Grisignano Di Zocco 1 360
-Mestrino 1 400
-Padova 0 450
+Milano Centrale 0 0
+Milano Lambrate 1 30
+Pioltello-Limito 1 60
+Treviglio 1 100
+Romano 1 140
+Chiari 1 180
+Rovato 1 220
+Brescia 0 250
+Desenzano Del Garda-Sirmione 0 300
+Peschiera Del Garda 0 330
+Verona Porta Nuova 0 370
