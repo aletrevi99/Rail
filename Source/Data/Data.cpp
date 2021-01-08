@@ -20,6 +20,14 @@ Data::Data() {
    readStations();
    readTrains();
    sort();
+   
+   rev_st = st;
+   int n = number_of_local_stations + number_of_principal_stations;
+   int m = rev_st[n - 1].get_Station_distance();
+   reverse(rev_st.begin(),rev_st.end());
+   
+   for(int i = 0; i < n; i++ )
+      rev_st[i].set_Station_distance(m - rev_st[i].get_Station_distance());
    if(flag)
       print();
 }

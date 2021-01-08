@@ -21,12 +21,14 @@ class Data {
    //std::vector<Station*> getStationsReference() const; //restituisce un vettore con le stazioni
    std::vector<Train>& getTrains();
    std::vector<Station>& getStation();
+   std::vector<Station>& get_reversed_Station();
    std::vector<int>& getDistances();
    std::vector<int>& getPrincipalDistances();
    
    private:
    std::vector<Train> tr; //struttura dati che contiene i treni in partenza
    std::vector<Station> st; //struttura dati che contiene le stazioni
+   std::vector<Station> rev_st; //struttura dati che contiene le stazioni in ordine invertito
    int number_of_principal_stations;
    int number_of_local_stations;
    int number_of_regional_trains;
