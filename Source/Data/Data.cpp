@@ -47,6 +47,11 @@ vector<Train>& Data::getTrains(){
 vector<Station>& Data::getStation(){
    return st;
 }
+
+vector<Station>& Data::get_reversed_Station(){
+   return rev_st;
+}
+
 vector<int>& Data::getDistances() {
    return distances;
 }
@@ -58,7 +63,7 @@ vector<int>& Data::getPrincipalDistances(){
 void Data::readStations(){
    
    ifstream file;
-   file.open("C://LDP/LDP/TrainLine/line_description.txt");
+   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova5/line_description.txt");
    if(file.is_open())
       cout<<":)"<<endl;
    string line;
@@ -115,7 +120,7 @@ void Data::readStations(){
 void Data::readTrains(){
    
    ifstream file;
-  file.open("C://LDP/LDP/TrainLine/timetables.txt");
+  file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova5/timetables.txt");
    if(file.is_open())
       cout<<":)"<<endl;
    string line;

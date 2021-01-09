@@ -8,6 +8,8 @@
 */
 
 #include <iostream>
+#include "Train.h"
+#include "Deposit.h"
 
 #ifndef ASSEGNAMENTO_2_STATION_H
 #define ASSEGNAMENTO_2_STATION_H
@@ -30,6 +32,9 @@ class Station{
         void set_stb2_status(bool s) {stb2 = s;};
         void set_stb3_status(bool s) {stb3 = s;};
         void set_stb4_status(bool s) {stb4 = s;};
+        
+        void add_to_Deposit(Train& t);
+        Train remove_from_Deposit(Train& t);
     
     protected:
         Station(std::string n, int d, bool loc)
@@ -44,6 +49,8 @@ class Station{
         bool stb2;
         bool stb3;
         bool stb4;
+        Deposit d1;         //deposito prima della stazione - direzione: verso capolinea
+        Deposit d2;         //deposito prima della stazione - direzione: verso origine
     
 };
 
