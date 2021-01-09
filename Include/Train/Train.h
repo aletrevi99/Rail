@@ -66,7 +66,7 @@ class Train
 
     protected:
         // costruttore
-        Train(int tc, bool dir, const std::vector<int> &p);
+        Train(int tc, bool dir, std::vector<int> p);
 
         // codice del treno
         int trainCode;
