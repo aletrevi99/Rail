@@ -15,7 +15,7 @@ class Train
 
         int getMaxSpeed() const;
 
-        int getCurrSpeed() const;
+        double getCurrSpeed() const;
 
         double getDistance() const;
 
@@ -43,7 +43,7 @@ class Train
 
 
         // setter functions
-        void setCurrSpeed(int cs);
+        void setCurrSpeed(double cs);
 
         void setDistance(double d);
 
@@ -71,7 +71,7 @@ class Train
         // codice del treno
         int trainCode;
         // velocità di crociera
-        int currSpeed;
+        double currSpeed;
         // distanza dalla stazione
         double distance;
         // tempo trascorso dalla partenza

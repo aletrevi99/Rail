@@ -4,7 +4,7 @@
 
 // cosrtuttori
 Train::Train(int tc, bool dir, const std::vector<int> &p)
-        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0}, distance{0}, minutes{0}, delay{0}, binary{0}
+        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0.0}, distance{0}, minutes{0}, delay{0}, binary{0}
 {}
 
 Regional_Train::Regional_Train(int tc, bool dir, const std::vector<int> &p) : Train(tc, dir, p)
@@ -77,7 +77,7 @@ int Train::getMaxSpeed() const
     return maxSpeed;
 }
 
-int Train::getCurrSpeed() const
+double Train::getCurrSpeed() const
 {
     return currSpeed;
 }
@@ -103,7 +103,7 @@ int Train::getNextBinary() const
 }
 
 // setter functions
-void Train::setCurrSpeed(int cs)
+void Train::setCurrSpeed(double cs)
 {
     if (cs < 0 || cs > maxSpeed)
         throw std::length_error("La velocità di crociera non può essere negativa. Imposta un valore positivo.\n");
