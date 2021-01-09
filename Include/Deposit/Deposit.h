@@ -32,9 +32,6 @@ class Deposit
         // definendo la priorità in base alle tre code standard specializzate
         // Train deleteTrain();
 
-        // distruttore di defult
-        ~Deposit() = default;
-
     private:
         // gestisco il deposito con tre code normali specializzate per tipologia di treno
         // std::queue<Regional_Train> rq;
