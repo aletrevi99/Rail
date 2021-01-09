@@ -3,17 +3,19 @@
  * n.m. 1216347
  */
 
+#ifndef ASSEGNAMENTO_2_DATA_H
+#define ASSEGNAMENTO_2_DATA_H
+
 #include <vector>
 #include <stdexcept>
 #include <string>
-#include <sstream> 
+#include <sstream>
 #include <fstream>
 #include <cmath>
 #include <algorithm>
+
 #include "Train.h"
 #include "Station.h"
-#ifndef ASSEGNAMENTO_2_DATA_H
-#define ASSEGNAMENTO_2_DATA_H
 
 class Data {
    
@@ -26,9 +28,9 @@ class Data {
    std::vector<Train>& getTrains();
    std::vector<Station>& getStation();
    std::vector<Station>& get_reversed_Station();
-   
-   
-   private:
+   std::vector<int> getPrincipalDistances() const;
+
+    private:
    std::vector<Train> tr; //struttura dati che contiene i treni in partenza
    std::vector<Station> st; //struttura dati che contiene le stazioni
    std::vector<Station> rev_st; //struttura dati che contiene le stazioni in ordine invertito
@@ -38,7 +40,7 @@ class Data {
    int number_of_highspeed_trains;
    int number_of_superhighspeed_trains;
    std::vector<int> distances;  //vettore contenente le distanze tra le stazioni
-   std::vector<int> principal_distances;  //vettore contenente le distanze tra le stazioni principali
+   std::vector<int> principal_distances; //vettore contenente le distanze tra le stazioni principali
    
    bool flag;  //variabile che indica se timetable ha subito modifche
    

@@ -28,9 +28,8 @@ Data::Data() {
 //metodi pubblici
 
 void Data::print(){
-   
-   for(int i = 0; i < tr.size(); i++)
-      cout << tr[i] << endl;
+   for(auto & i : tr)
+      cout << i << endl;
 }
 
 vector<Train>& Data::getTrains(){
@@ -45,6 +44,9 @@ vector<Station>& Data::get_reversed_Station(){
    return rev_st;
 }
 
+vector<int> Data::getPrincipalDistances() const {
+    return principal_distances;
+}
 
 //metodi privati
 void Data::readStations(){
@@ -59,6 +61,7 @@ void Data::readStations(){
    int type_station = 0;
    int distance = 0;
    int previous_distance = 0;
+   int previous_principal_distances = 0;
    
    getline(file,line);     
                                                  
@@ -85,10 +88,14 @@ void Data::readStations(){
             Principal_Station sp(name_station,distance);
             st.push_back(sp);
             distances.push_back(distance - previous_distance);
-            if(number_of_principal_stations == 1)
-               principal_distances.push_back(distance);
-            else
-               principal_distances.push_back(distance - principal_distances.back());
+            if(number_of_principal_stations == 1) {
+                principal_distances.push_back(distance);
+                previous_principal_distances = distance;
+            }
+            else {
+                principal_distances.push_back(distance - previous_principal_distances);
+                previous_principal_distances = distance;
+            }
             previous_distance = distance;
             number_of_principal_stations++;
          }
@@ -128,12 +135,13 @@ void Data::readTrains(){
          
          //controllo sui valori del file input
          if(!((train_type == 1) || (train_type == 2) || (train_type == 3)))
-         throw exception(); 
+            throw exception();
          
          if(!((train_direction == 0) || (train_direction == 1)))
-         throw exception();
+            throw exception();
          
-            n = number_of_principal_stations;
+         n = number_of_principal_stations;
+
          if(train_type == 1)
             n += number_of_local_stations;
          
@@ -274,4 +282,3 @@ void Data::sort(){
       tr[i]=tmp;
    }
 }
-
