@@ -104,6 +104,16 @@ int Train::getNextBinary() const
     return nextBinary;
 }
 
+int Train::getStops() const
+{
+    return stops;
+}
+
+double Train::getNextSpeed() const
+{
+    return nextSpeed;
+}
+
 // setter functions
 void Train::setCurrSpeed(double cs)
 {
@@ -173,6 +183,16 @@ void Train::setStatus(int st)
 void Train::setNextBinary(int nb)
 {
     nextBinary = nb;
+}
+
+void Train::setNextSpeed(double ns)
+{
+    nextSpeed = ns;
+}
+
+void Train::setStops(int s)
+{
+    stops = s;
 }
 
 

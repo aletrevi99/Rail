@@ -41,6 +41,10 @@ class Train
 
         int getNextBinary() const;
 
+        int getStops() const;
+
+        double getNextSpeed() const;
+
 
         // setter functions
         void setCurrSpeed(double cs);
@@ -60,6 +64,10 @@ class Train
         void setStatus(int status);
 
         void setNextBinary(int nextBinary);
+
+        void setNextSpeed(double nextSpeed);
+
+        void setStops(int stops);
 
         // controlla se questo treno parte prima di t
         bool isFirst(Train& t);
@@ -99,6 +107,10 @@ class Train
         std::vector<int> path;
         // utile a gestire il caso di due stazioni distanti 20km
         int nextBinary = 0;
+        // salva la velocità che il treno avrà al di fuori della stazione
+        double nextSpeed = 0;
+        // numero di volte in cui il treno si ferma per far scendere i passeggeri
+        int stops = 0;
 };
 
 // overload operatore < per confrontare i treni a seconda della loro velcità
