@@ -13,7 +13,7 @@ Data::Data() {
    readTrains();
    sort();
    
-   rev_st = st;
+   rev_st = st;   //riempimento del vettore di stazioni rovesciato
    int n = number_of_local_stations + number_of_principal_stations;
    int m = rev_st[n - 1].get_Station_distance();
    reverse(rev_st.begin(),rev_st.end());
@@ -45,12 +45,6 @@ vector<Station>& Data::get_reversed_Station(){
    return rev_st;
 }
 
-vector<int>& Data::getDistances() {
-   return distances;
-}
-vector<int>& Data::getPrincipalDistances(){
-   return principal_distances;
-}
 
 //metodi privati
 void Data::readStations(){
@@ -67,10 +61,10 @@ void Data::readStations(){
    int previous_distance = 0;
    
    getline(file,line);     
-                                                 //aggiungo la stazione origine al vector
-   name_station = line;
+                                                 
+   name_station = line;   
    Principal_Station s(name_station,0);
-   st.push_back(s);
+   st.push_back(s);   //aggiungo la stazione origine al vector
    number_of_principal_stations++;
    while(getline(file,line)){
       
@@ -132,8 +126,12 @@ void Data::readTrains(){
          ss >> train_direction;
          ss >> train_type;
          
+         //controllo sui valori del file input
          if(!((train_type == 1) || (train_type == 2) || (train_type == 3)))
          throw exception(); 
+         
+         if(!((train_direction == 0) || (train_direction == 1)))
+         throw exception();
          
             n = number_of_principal_stations;
          if(train_type == 1)
@@ -148,11 +146,7 @@ void Data::readTrains(){
       if(n < path.size())
         path.resize(n);
       
-      //controlli su tipo nome e campo
-      if(!((train_direction == 0) || (train_direction == 1)))
-         throw exception();
-      
-
+      //per inserire correttamente il campo su train
       bool direction = false;
       if(train_direction == 0)
          direction = true;

@@ -26,8 +26,7 @@ class Data {
    std::vector<Train>& getTrains();
    std::vector<Station>& getStation();
    std::vector<Station>& get_reversed_Station();
-   //std::vector<int>& getDistances();
-   //std::vector<int>& getPrincipalDistances();
+   
    
    private:
    std::vector<Train> tr; //struttura dati che contiene i treni in partenza
