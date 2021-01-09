@@ -13,6 +13,13 @@ class Deposit
         // costruttore di default
         Deposit() = default;
 
+        // utilizzando la coda prioritaria
+        void addTrain(const Train& t);
+
+        // ritorna e rimuove il puntatore al treno più veloce per non creare ingorghi nella ferrovia
+        // utilizzando la priorità della coda prioritaria
+        Train removeTrain();
+
         // sovraccarico la funzione per aggiungere diversi treni alle diverse code con una singola funzione
         // serve differenziare o venendo tutti da un unico vettore di Train* è inutile?
         // void addTrain(Regional_Train t);
@@ -21,17 +28,9 @@ class Deposit
 
         // void addTrain(Super_High_Speed_Train t);
 
-        // utilizzando la coda prioritaria
-        void addTrain(const Train& t);
-
         // ritorna e rimuove il puntatore al treno più veloce per non creare ingorghi nella ferrovia
         // definendo la priorità in base alle tre code standard specializzate
         // Train deleteTrain();
-
-        // ritorna e rimuove il puntatore al treno più veloce per non creare ingorghi nella ferrovia
-        // utilizzando la priorità della coda prioritaria
-        Train removeTrain();
-
 
         // distruttore di defult
         ~Deposit() = default;
