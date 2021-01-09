@@ -27,6 +27,8 @@ class Rail{
         std::vector<Station> stations;
         std::vector<Train> trains;
         std::vector<Train> active_trains;
+        std::vector<int> principal_distances;
+        std::vector<int> reverse_principal_distances;
         Data da;
         int ns;                                 //number of stations
         int nt;                                 //number of trains
