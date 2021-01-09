@@ -118,10 +118,10 @@ double Train::getNextSpeed() const
 void Train::setCurrSpeed(double cs)
 {
     if (cs < 0 || cs > maxSpeed)
-        throw std::length_error("La velocità di crociera non può essere negativa. Imposta un valore positivo.\n");
+        throw std::length_error("La velocita' di crociera non può essere negativa. Imposta un valore positivo.\n");
     else if (cs > maxSpeed)
         throw std::length_error(
-                "La velocità di crociera non può essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
+                "La velocita' di crociera non può essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
     else
         currSpeed = cs;
 }
