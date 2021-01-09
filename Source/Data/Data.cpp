@@ -1,13 +1,5 @@
 #include "Data.h"
 
-#include <stdexcept>
-#include <string>
-#include <sstream> 
-#include <fstream>
-#include <cmath>
-#include <iterator>
-#include <algorithm>
-
 using namespace std;
 //costruttore
 Data::Data() {
@@ -21,13 +13,14 @@ Data::Data() {
    readTrains();
    sort();
    
-   rev_st = st;
+   rev_st = st;   //riempimento del vettore di stazioni rovesciato
    int n = number_of_local_stations + number_of_principal_stations;
    int m = rev_st[n - 1].get_Station_distance();
    reverse(rev_st.begin(),rev_st.end());
    
    for(int i = 0; i < n; i++ )
       rev_st[i].set_Station_distance(m - rev_st[i].get_Station_distance());
+   
    if(flag)
       print();
 }
@@ -52,18 +45,12 @@ vector<Station>& Data::get_reversed_Station(){
    return rev_st;
 }
 
-vector<int>& Data::getDistances() {
-   return distances;
-}
-vector<int>& Data::getPrincipalDistances(){
-   return principal_distances;
-}
-//metodi privati
 
+//metodi privati
 void Data::readStations(){
    
    ifstream file;
-   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova5/line_description.txt");
+   file.open("../line_description.txt");
    if(file.is_open())
       cout<<":)"<<endl;
    string line;
@@ -74,25 +61,25 @@ void Data::readStations(){
    int previous_distance = 0;
    
    getline(file,line);     
-                                                 //aggiungo la stazione origine al vector
-   name_station = line;
+                                                 
+   name_station = line;   
    Principal_Station s(name_station,0);
-   st.push_back(s);
+   st.push_back(s);   //aggiungo la stazione origine al vector
    number_of_principal_stations++;
    while(getline(file,line)){
       
-      name_station = line.substr(0, line.rfind(" ") - 2);
-      type_station = stoi(line.substr(line.rfind(" ") - 1,1));
+      name_station = line.substr(0, line.rfind(' ') - 2);
+      type_station = stoi(line.substr(line.rfind(' ') - 1,1));
       
       if(!((type_station == 0)||(type_station == 1)))
          throw exception();
          
-      distance = stoi(line.substr(line.rfind(" ") + 1));
+      distance = stoi(line.substr(line.rfind(' ') + 1));
       
        if((distance <= 0)||((distance - previous_distance) < 0))
           throw exception();
          
-      if(!((distance - previous_distance) < 20)){ 
+      if((distance - previous_distance) >= 20){ 
          
          if(type_station == 0) { 
             Principal_Station sp(name_station,distance);
@@ -120,7 +107,7 @@ void Data::readStations(){
 void Data::readTrains(){
    
    ifstream file;
-  file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova5/timetables.txt");
+  file.open("../timetables.txt");
    if(file.is_open())
       cout<<":)"<<endl;
    string line;
@@ -139,12 +126,16 @@ void Data::readTrains(){
          ss >> train_direction;
          ss >> train_type;
          
+         //controllo sui valori del file input
          if(!((train_type == 1) || (train_type == 2) || (train_type == 3)))
          throw exception(); 
          
+         if(!((train_direction == 0) || (train_direction == 1)))
+         throw exception();
+         
             n = number_of_principal_stations;
          if(train_type == 1)
-            n =+ number_of_local_stations;
+            n += number_of_local_stations;
          
          while(!ss.eof()){
             ss >> min;
@@ -155,11 +146,7 @@ void Data::readTrains(){
       if(n < path.size())
         path.resize(n);
       
-      //controlli su tipo nome e campo
-      if(!((train_direction == 0) || (train_direction == 1)))
-         throw exception();
-      
-
+      //per inserire correttamente il campo su train
       bool direction = false;
       if(train_direction == 0)
          direction = true;
@@ -198,7 +185,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations + number_of_local_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + (((double) 10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10.0/80) * 60));
             time = p[i] - p[i - 1];
             if(min_time >= time) {
                p[i] = p[i - 1] + min_time + 5;
@@ -208,7 +195,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
             }
          }   
          else{
-            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + (((double) 10/80) * 60)) + 15 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/160) * 60) + ((10.0/80) * 60)) + 15 + p.back();
             if(i == 1)
                min_time = min_time - 5;
             p.push_back(min_time);
@@ -224,7 +211,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + (( (double)10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10.0/80) * 60));
             if(min_time >= (p[i] - p[i - 1])){
                p[i] = p[i - 1] + min_time + 5;
                  if(i == 1)
@@ -233,7 +220,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
             }
          }  
          else {
-            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + (((double)10/80) * 60)) + 15 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/240) * 60) + ((10.0/80) * 60)) + 15 + p.back();
             if(i == 1)
                min_time = min_time - 5;
             p.push_back(min_time);
@@ -252,7 +239,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
       int tot_stations =  number_of_principal_stations;
       for(int i = 1; i < tot_stations; i++){
          if(i < psize) {                                                             
-            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + (((double)10/80) * 60));
+            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10.0/80) * 60));
             if(min_time >= (p[i] - p[i - 1])) {
                p[i] = p[i - 1] + min_time + 5;
                  if(i == 1)
@@ -261,7 +248,7 @@ void Data::pathChecker(vector<int>& p, int t, int dir){
             }
          }
          else{
-            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + (((double)10/80) * 60)) + 15 + p.back();
+            min_time = round(((((double) tmp[i - 1] - 10)/300) * 60) + ((10.0/80) * 60)) + 15 + p.back();
             if(i == 1)
                min_time = min_time - 5;
             p.push_back(min_time);
@@ -279,7 +266,7 @@ void Data::sort(){
       min = i;
 
       for(int j=i+1; j < tr.size(); j++)
-      if(tr[j].isFirst(tr[min])) 
+         if(tr[j].isFirst(tr[min])) 
          min = j;
 
       Train tmp = tr[min];

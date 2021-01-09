@@ -2,6 +2,20 @@
 
 #include "Deposit.h"
 
+// coda prioritaria
+void Deposit::addTrain(const Train& t)
+{
+    pq.push(t);
+}
+
+// coda prioritaria
+Train Deposit::removeTrain()
+{
+    Train tmp = pq.top();
+    pq.pop();
+    return tmp;
+}
+
 /*
 // tre code code starnard specializzate
 void Deposit::addTrain(Regional_Train t)
@@ -18,24 +32,7 @@ void Deposit::addTrain(Super_High_Speed_Train t)
 {
     sq.push(t);
 }
-*/
 
-// coda prioritaria
-void Deposit::addTrain(const Train& t)
-{
-    pq.push(t);
-}
-
-// coda prioritaria
-Train Deposit::removeTrain()
-{
-    Train tmp = pq.top();
-    pq.pop();
-    return tmp;
-}
-
-/*
-// tre code standard specializzate
 Train Deposit::deleteTrain()
 {
     if (sq.empty())

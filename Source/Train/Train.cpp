@@ -2,9 +2,11 @@
 
 #include "Train.h"
 
+#include <utility>
+
 // cosrtuttori
-Train::Train(int tc, bool dir, const std::vector<int> &p)
-        : trainCode{tc}, direction{dir}, path{p}, currSpeed{0.0}, distance{0}, minutes{0}, delay{0}, binary{0}
+Train::Train(int tc, bool dir, std::vector<int> p)
+        : trainCode{tc}, direction{dir}, path{std::move(p)}, currSpeed{0.0}, distance{0}, minutes{0}, delay{0}, binary{0}
 {}
 
 Regional_Train::Regional_Train(int tc, bool dir, const std::vector<int> &p) : Train(tc, dir, p)
@@ -102,6 +104,16 @@ int Train::getNextBinary() const
     return nextBinary;
 }
 
+int Train::getStops() const
+{
+    return stops;
+}
+
+double Train::getNextSpeed() const
+{
+    return nextSpeed;
+}
+
 // setter functions
 void Train::setCurrSpeed(double cs)
 {
@@ -171,6 +183,16 @@ void Train::setStatus(int st)
 void Train::setNextBinary(int nb)
 {
     nextBinary = nb;
+}
+
+void Train::setNextSpeed(double ns)
+{
+    nextSpeed = ns;
+}
+
+void Train::setStops(int s)
+{
+    stops = s;
 }
 
 
