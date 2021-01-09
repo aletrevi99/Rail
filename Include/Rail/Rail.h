@@ -7,9 +7,14 @@
  * Data di creazione: 30/12/2020
 */
 
+#ifndef ASSEGNAMENTO_2_RAIL_H
+#define ASSEGNAMENTO_2_RAIL_H
+
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <cmath>
+#include <algorithm>
 
 //#include "Station.h"
 //#include "Train.h"
@@ -48,3 +53,5 @@ class Rail{
         int next_Principal_Station(Train& t);
     
 };
+
+#endif //ASSEGNAMENTO2_RAIL_H

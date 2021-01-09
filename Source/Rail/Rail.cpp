@@ -8,10 +8,6 @@
 */
 
 #include "Rail.h"
-#include <Math.h>
-
-#include <iterator>
-#include <algorithm>
 
 using namespace std;
 
@@ -105,6 +101,7 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
         
         if(/*t.getPassedStations() == (ns-1)*/t.getStatus() == 5){              //aggiunta
             finish(t, s, m);
+            return;
         }
         int g = t.getBinary();
         vector<Station> st = stations;
@@ -257,11 +254,13 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getPassedStations()] - (t.getPath()[t.getPassedStations()-1] + stop);
             k = st[t.getPassedStations()].get_Station_distance() - st[t.getPassedStations()-1].get_Station_distance();
             v = (k/n)*60;
+            if (v > 160) v = 160;
             t.setCurrSpeed(v);
         }else{
             n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
             k = st[t.getPassedStations()+1].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
             v = (k/n)*60;
+            if (v > 160) v = 160;
             t.setCurrSpeed(v);
         }
         if(t.getCurrSpeed() > 80){
@@ -278,16 +277,6 @@ void Rail::update_speed(Train& t){
                 }
             }
         }
-        
-        //fino a qui funziona tutto ok con treni regionali
-        
-        
-        
-        
-        
-        
-        
-        
     }else{
         if(t.getPassedStations() > 0){
             int stop = 5;
@@ -298,6 +287,8 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getStops()+1] - (t.getPath()[t.getStops()] + stop);
             k = principal_distances[t.getStops()];      //fare controllo per quando usare reverse_principal_distances
             v = (k/n)*60;
+            if (v > 240 && (t.getType() == 2)) v = 240;
+            if (v > 300 && (t.getType() == 3)) v = 300;
             t.setNextSpeed(v);
         }else{
             //se getPassedStations = 0
@@ -305,6 +296,8 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
             k = st[p].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
             v = (k/n)*60;
+            if (v > 240 && (t.getType() == 2)) v = 240;
+            if (v > 300 && (t.getType() == 3)) v = 300;
             t.setNextSpeed(v);
         }
         double nextSpeed = t.getNextSpeed();
@@ -351,7 +344,7 @@ int Rail::next_Principal_Station(Train& t){
 
 void Rail::simulation(){
     cout << "START\n";
-    for(int i=385; i<3000; i++){
+    for(int i=120; i<3000; i++){
         
         for(int t=0; t<nt; t++){
             if(trains[t].getPath()[0] == i){
