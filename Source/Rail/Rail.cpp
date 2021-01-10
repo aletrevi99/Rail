@@ -343,7 +343,7 @@ int Rail::next_Principal_Station(Train& t){
 }
 
 void Rail::simulation(){
-    cout << "START\n";
+    cout << "\n\t\t\t\t\t\t\t\tSTART\n\n";
     for(int i=120; i<3000; i++){
         
         for(int t=0; t<nt; t++){
@@ -374,4 +374,5 @@ void Rail::simulation(){
             
         }
     }
+    cout << "\n\t\t\t\t\t\t\t\tEND\n";
 }
