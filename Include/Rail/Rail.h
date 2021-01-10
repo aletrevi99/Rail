@@ -42,8 +42,8 @@ class Rail{
         int get_minutes(Train& t, double d);       //quanti minuti ci mette un treno per percorrere una certa distanza
         double get_km(Train& t, double m);            //quanti km percorre un treno in m minuti
         void get_station_binary(Train& t, Station& s, int m, double d);  //comunica al treno il binario in cui fermarsi
-        void train_arrival(Train& t, Station& s, int m, double d);           //velocità treno = 0
-        void train_departure(Train& t, Station& s, int m);                //velocità treno = 80
+        void train_arrival(Train& t, Station& s, int m, double d);                              //velocità treno = 0
+        void train_departure(Train& t, Station& s, int m, int position_in_active_trains);       //velocità treno = 80
         void station_entry(Train& t, Station& s, int m, double d);
         void station_exit(Train& t, Station& s, int m, double d);
         void go_trought(Train& t, Station& s, int m);
@@ -51,6 +51,7 @@ class Rail{
         void update_distance(Train& t);
         void update_speed(Train& t);
         int next_Principal_Station(Train& t);
+        bool distance_check(Train& t, int position_in_active_trains);
     
 };
 
