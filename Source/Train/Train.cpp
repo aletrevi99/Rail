@@ -118,10 +118,10 @@ double Train::getNextSpeed() const
 void Train::setCurrSpeed(double cs)
 {
     if (cs < 0)
-        throw std::length_error("La velocita' di crociera non può essere negativa. Imposta un valore positivo.\n");
+        throw std::length_error("La velocita' di crociera non puo' essere negativa. Imposta un valore positivo.\n");
     else if (cs > maxSpeed)
         throw std::length_error(
-                "La velocita' di crociera non può essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
+                "La velocita' di crociera non puo' essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
     else
         currSpeed = cs;
 }
@@ -130,7 +130,7 @@ void Train::setDistance(double d)
 {
     if (d < 0)
         throw std::length_error(
-                "La distanza del treno dalla stazione d'origine non può essere negativa. Imposta un valore positivo.\n");
+                "La distanza del treno dalla stazione d'origine non puo' essere negativa. Imposta un valore positivo.\n");
     else
         distance = d;
 }
@@ -155,7 +155,7 @@ void Train::setMinutes(int min)
 {
     if (min < 0)
         throw std::length_error(
-                "Il tempo trascorso dalla partenza non può essere negativo. Imposta un valore positivo.\n");
+                "Il tempo trascorso dalla partenza non puo' essere negativo. Imposta un valore positivo.\n");
     else
         minutes = min;
 }
@@ -168,7 +168,7 @@ void Train::setDeposit(bool dep)
 void Train::setPassedStations(int ps)
 {
     if (ps < 0)
-        throw std::length_error("Il numero della stazioni passate non può essere negativo.Imposta un valore positivo.\n");
+        throw std::length_error("Il numero della stazioni passate non puo' essere negativo. Imposta un valore positivo.\n");
     else
         passedStations = ps;
 }
