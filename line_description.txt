@@ -1,4 +1,4 @@
-Milano Centrale 0 0
+Milano Centrale
 Milano Lambrate 1 30
 Pioltello-Limito 1 60
 Treviglio 1 100
