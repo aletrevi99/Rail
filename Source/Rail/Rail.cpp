@@ -99,6 +99,7 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
         }
         if(t.getStatus() == 5){
             finish(t, s, m);
+            return;
         }
         
         int g = t.getBinary();
@@ -236,93 +237,95 @@ void Rail::update_distance(Train& t){
 
 void Rail::update_speed(Train& t){
     //controllare se ha un treno davanti a meno di 10km
-    
-    int n = 0;
-    double k = 0;
-    double v = 0;
-    vector<Station> st = stations;
-    if(!t.isDirection()){
-        st = da.get_reversed_Station();
-    }
-    if(t.isStopLocal()){
-        if(t.getPassedStations() > 0){
-            int stop = 5;
-            if(t.getDistance() < (st[1].get_Station_distance())){
-                stop = 0;
-            }
-            n = t.getPath()[t.getPassedStations()] - (t.getPath()[t.getPassedStations()-1] + stop);
-            k = st[t.getPassedStations()].get_Station_distance() - st[t.getPassedStations()-1].get_Station_distance();
-            v = (k/n)*60;
-            if (v > 160){
-                v = 160;
-            }
-            t.setCurrSpeed(v);
-        }else{
-            n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
-            k = st[t.getPassedStations()+1].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
-            v = (k/n)*60;
-            if (v > 160){
-                v = 160;
-            }
-            t.setCurrSpeed(v);
+
+    if(t.getStatus() != 5){
+        int n = 0;
+        double k = 0;
+        double v = 0;
+        vector<Station> st = stations;
+        if(!t.isDirection()){
+            st = da.get_reversed_Station();
         }
-        if(t.getCurrSpeed() > 80){
-            if(t.getStatus() ==  2){        //sta uscendo da una stazione
-                t.setCurrSpeed(80);
+        if(t.isStopLocal()){
+            if(t.getPassedStations() > 0){
+                int stop = 5;
+                if(t.getDistance() < (st[1].get_Station_distance())){
+                    stop = 0;
+                }
+                n = t.getPath()[t.getPassedStations()] - (t.getPath()[t.getPassedStations()-1] + stop);
+                k = st[t.getPassedStations()].get_Station_distance() - st[t.getPassedStations()-1].get_Station_distance();
+                v = (k/n)*60;
+                if (v > 160){
+                    v = 160;
+                }
+                t.setCurrSpeed(v);
             }else{
-                if(t.getStatus() == 0){     //sta entrando in una stazione
+                n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
+                k = st[t.getPassedStations()+1].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
+                v = (k/n)*60;
+                if (v > 160){
+                    v = 160;
+                }
+                t.setCurrSpeed(v);
+            }
+            if(t.getCurrSpeed() > 80){
+                if(t.getStatus() ==  2){        //sta uscendo da una stazione
                     t.setCurrSpeed(80);
                 }else{
-                    k -= 10;
-                    v = (k/(n-8))*60;
-                    if (v > 160){
-                        v = 160;
+                    if(t.getStatus() == 0){     //sta entrando in una stazione
+                        t.setCurrSpeed(80);
+                    }else{
+                        k -= 10;
+                        v = (k/(n-8))*60;
+                        if (v > 160){
+                            v = 160;
+                        }
+                        t.setCurrSpeed(v);
                     }
-                    t.setCurrSpeed(v);
                 }
             }
-        }
-    }else{
-        if(t.getPassedStations() > 0){
-            int stop = 5;
-            if(t.getDistance() < (st[1].get_Station_distance())){
-                stop = 0;
-            }
-            vector<int> r = principal_distances;
-            if(!(t.isDirection())){
-                r = reverse_principal_distances;
-            }
-            n = t.getPath()[t.getStops()+1] - (t.getPath()[t.getStops()] + stop);
-            k = r[t.getStops()];
-            v = (k/n)*60;
-            t.setNextSpeed(v);
         }else{
-            //se getPassedStations = 0
-            int p = next_Principal_Station(t);
-            n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
-            k = st[p].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
-            v = (k/n)*60;
-            t.setNextSpeed(v);
-        }
-        double nextSpeed = t.getNextSpeed();
-        if(nextSpeed <= 80){
-            t.setCurrSpeed(nextSpeed);
-        }else{
-            if(t.getStatus() ==  2){        //sta uscendo da una stazione
-                t.setCurrSpeed(80);
+            if(t.getPassedStations() > 0){
+                int stop = 5;
+                if(t.getDistance() < (st[1].get_Station_distance())){
+                    stop = 0;
+                }
+                vector<int> r = principal_distances;
+                if(!(t.isDirection())){
+                    r = reverse_principal_distances;
+                }
+                n = t.getPath()[t.getStops()+1] - (t.getPath()[t.getStops()] + stop);
+                k = r[t.getStops()];
+                v = (k/n)*60;
+                t.setNextSpeed(v);
             }else{
-                if(t.getStatus() == 0){     //sta entrando in una stazione
+                //se getPassedStations = 0
+                int p = next_Principal_Station(t);
+                n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
+                k = st[p].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
+                v = (k/n)*60;
+                t.setNextSpeed(v);
+            }
+            double nextSpeed = t.getNextSpeed();
+            if(nextSpeed <= 80){
+                t.setCurrSpeed(nextSpeed);
+            }else{
+                if(t.getStatus() ==  2){        //sta uscendo da una stazione
                     t.setCurrSpeed(80);
                 }else{
-                    k -= 10;
-                    v = (k/(n-8))*60;
-                    if (v > 240 && (t.getType() == 2)){
-                        v = 240;
+                    if(t.getStatus() == 0){     //sta entrando in una stazione
+                        t.setCurrSpeed(80);
+                    }else{
+                        k -= 10;
+                        v = (k/(n-8))*60;
+                        if (v > 240 && (t.getType() == 2)){
+                            v = 240;
+                        }
+                        if (v > 300 && (t.getType() == 3)){
+                            v = 300;
+                        }
+                        t.setCurrSpeed(v);
                     }
-                    if (v > 300 && (t.getType() == 3)){
-                        v = 300;
-                    }
-                    t.setCurrSpeed(v);
                 }
             }
         }
@@ -335,7 +338,7 @@ int Rail::next_Principal_Station(Train& t){
     if(!t.isDirection()){
         st = da.get_reversed_Station();
     }
-    
+
     if(t.getStatus() == 2){
         for(i=t.getPassedStations() + 1; i<ns; i++){
             if(!(st[i].get_Station_type())){
@@ -364,33 +367,33 @@ bool Rail::distance_check(Train& t, int position_in_active_trains){
 void Rail::simulation(){
     cout << "\n\t\t\t\t\t\t\t\tSTART\n\n";
     for(int i=120; i<3000; i++){            //mettere a 0 !!!!
-        
+
         for(int t=0; t<nt; t++){
             if(trains[t].getPath()[0] == i){
                 active_trains.push_back(trains[t]);
             }
         }
-        
+
         for(int t=0; t<active_trains.size(); t++){
-            
+
             vector<Station> s = stations;
             if(!active_trains[t].isDirection()){
                 s = da.get_reversed_Station();
             }
-            
+
             double d = active_trains[t].getDistance();
             if(active_trains[t].getStatus() != 1){
                 update_distance(active_trains[t]);
             }
-            
+
             station_entry(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             train_arrival(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             train_departure(active_trains[t], s[active_trains[t].getPassedStations()], i, t);
             station_exit(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             get_station_binary(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
-            
+
             update_speed(active_trains[t]);
-            
+
         }
     }
     cout << "\n\t\t\t\t\t\t\t\tEND\n";
