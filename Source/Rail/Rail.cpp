@@ -48,6 +48,7 @@ void Rail::get_station_binary(Train& t, Station& s, int m, double d){        //d
     }
     if(t.getStatus() == 3 && (p || (t.getDistance() == 0))){
         if((!(t.isStopLocal())) && (s.get_Station_type())){
+            t.setBinary(0);
             go_trought(t, s, m);
         }else{
             if(t.isDirection()){
@@ -94,14 +95,12 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
         cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
         
         
-        //aggiunta
         if(stations[ns-1].get_Station_distance() == s.get_Station_distance()){
             t.setStatus(5);
         }
         
-        if(/*t.getPassedStations() == (ns-1)*/t.getStatus() == 5){              //aggiunta
+        if(t.getStatus() == 5){
             finish(t, s, m);
-            return;
         }
         int g = t.getBinary();
         vector<Station> st = stations;
@@ -121,7 +120,7 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
 }
 
 void Rail::train_departure(Train& t, Station& s, int m){
-    if(t.getStatus() == 1 && t.getDistance() == s.get_Station_distance()){
+    if(t.getStatus() == 1 /*&& (t.getDistance() == s.get_Station_distance())*/){
         //t.setCurrSpeed(80);
         if(t.getPassedStations() == 0){
             cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
@@ -203,7 +202,7 @@ void Rail::station_exit(Train& t, Station& s, int m, double d){
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        if(st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance() == 20){
+        if((st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance() == 20)){
             t.setStatus(4);
             int l = t.getNextBinary();
             t.setBinary(l);
@@ -219,10 +218,10 @@ void Rail::go_trought(Train& t, Station& s, int m){
 }
 
 void Rail::finish(Train& t, Station& s, int m){
-    change_v(t, 0);
+    //change_v(t, 0);
     active_trains.erase(active_trains.begin());
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
-    t.setStatus(5);
+    //t.setStatus(5);       inutile, lo stato è già 5
 }
 
 void Rail::update_distance(Train& t){
@@ -254,13 +253,17 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getPassedStations()] - (t.getPath()[t.getPassedStations()-1] + stop);
             k = st[t.getPassedStations()].get_Station_distance() - st[t.getPassedStations()-1].get_Station_distance();
             v = (k/n)*60;
-            if (v > 160) v = 160;
+            if (v > 160){
+                v = 160;
+            }
             t.setCurrSpeed(v);
         }else{
             n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
             k = st[t.getPassedStations()+1].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
             v = (k/n)*60;
-            if (v > 160) v = 160;
+            if (v > 160){
+                v = 160;
+            }
             t.setCurrSpeed(v);
         }
         if(t.getCurrSpeed() > 80){
@@ -272,7 +275,9 @@ void Rail::update_speed(Train& t){
                 }else{
                     k -= 10;
                     v = (k/(n-8))*60;
-                    if (v > 160) v = 160;
+                    if (v > 160){
+                        v = 160;
+                    }
                     t.setCurrSpeed(v);
                 }
             }
@@ -287,8 +292,12 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getStops()+1] - (t.getPath()[t.getStops()] + stop);
             k = principal_distances[t.getStops()];      //fare controllo per quando usare reverse_principal_distances
             v = (k/n)*60;
-            if (v > 240 && (t.getType() == 2)) v = 240;
-            if (v > 300 && (t.getType() == 3)) v = 300;
+            if (v > 240 && (t.getType() == 2)){
+                v = 240;
+            }
+            if (v > 300 && (t.getType() == 3)){
+                v = 300;
+            }
             t.setNextSpeed(v);
         }else{
             //se getPassedStations = 0
@@ -296,8 +305,12 @@ void Rail::update_speed(Train& t){
             n = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
             k = st[p].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
             v = (k/n)*60;
-            if (v > 240 && (t.getType() == 2)) v = 240;
-            if (v > 300 && (t.getType() == 3)) v = 300;
+            if (v > 240 && (t.getType() == 2)){
+                v = 240;
+            }
+            if (v > 300 && (t.getType() == 3)){
+                v = 300;
+            }
             t.setNextSpeed(v);
         }
         double nextSpeed = t.getNextSpeed();
@@ -310,8 +323,12 @@ void Rail::update_speed(Train& t){
                 if(t.getStatus() == 0){     //sta entrando in una stazione
                     t.setCurrSpeed(80);
                 }else{
-                    if (v > 240 && (t.getType() == 2)) v = 240;
-                    if (v > 300 && (t.getType() == 3)) v = 300;
+                    if (v > 240 && (t.getType() == 2)){
+                        v = 240;
+                    }
+                    if (v > 300 && (t.getType() == 3)){
+                        v = 300;
+                    }
                     t.setCurrSpeed(nextSpeed);
                 }
             }
