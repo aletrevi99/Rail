@@ -121,7 +121,7 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
 
 void Rail::train_departure(Train& t, Station& s, int m, int position_in_active_trains){
     bool flag = distance_check(t, position_in_active_trains);
-    if(t.getStatus() == 1 && flag){
+    if(t.getStatus() == 1 /*&& flag*/){
         //t.setCurrSpeed(80);
         if(t.getPassedStations() == 0){
             cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
@@ -135,9 +135,9 @@ void Rail::train_departure(Train& t, Station& s, int m, int position_in_active_t
     }
     
     //controllo distance_check
-    if(!flag){
+    /*if(!flag){
         cout << "Train " << t.getTrainCode() <<  "is waiting!\n";
-    }
+    }*/
 }
 
 void Rail::station_entry(Train& t, Station& s, int m, double d){
@@ -225,8 +225,8 @@ void Rail::go_trought(Train& t, Station& s, int m){
 
 void Rail::finish(Train& t, Station& s, int m){
     //change_v(t, 0);
-    active_trains.erase(active_trains.begin());
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
+    active_trains.erase(active_trains.begin());
     //t.setStatus(5);       inutile, lo stato è già 5
 }
 
@@ -357,6 +357,10 @@ int Rail::next_Principal_Station(Train& t){
 
 bool Rail::distance_check(Train& t, int position_in_active_trains){
     for(int i=0; i<active_trains.size(); i++){
+        
+        //cout << "Distanza treno " << t.getTrainCode() << ": " << t.getDistance() << endl;
+        //cout << "Distanza treno " << t.getTrainCode() << " dal treno " << active_trains[i].getTrainCode() << ": " << active_trains[i].getDistance() - t.getDistance() << endl;
+        
         if(fabs(active_trains[i].getDistance() - t.getDistance() <= 10) && (i != position_in_active_trains)){
             return false;
         }
