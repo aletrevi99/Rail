@@ -12,8 +12,8 @@
 using namespace std;
 int main(){
     
-    /* Utilizziamo questo main per verificare il corretto funzionamento della linea ferroviaria.
-     * Dopo aver creato un oggetto della classe Line, infatti, ne chiamiamo la funzione simulation che simulerà
+    /* Viene utilizzato questo main per verificare il corretto funzionamento della linea ferroviaria.
+     * Dopo aver creato un oggetto della classe Line, infatti, viene chiamata la funzione simulation che simula
      * il funzionamento della linea ferroviaria nell'arco della giornata. */
     
     Line l;
