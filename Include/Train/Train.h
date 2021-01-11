@@ -13,8 +13,6 @@ class Train
         // getter functions
         int getTrainCode() const;
 
-        int getMaxSpeed() const;
-
         double getCurrSpeed() const;
 
         double getDistance() const;
@@ -43,7 +41,7 @@ class Train
 
         int getStops() const;
 
-        double getNextSpeed() const;
+        bool isNeedDeposit() const;
 
 
         // setter functions
@@ -65,9 +63,9 @@ class Train
 
         void setNextBinary(int nextBinary);
 
-        void setNextSpeed(double nextSpeed);
-
         void setStops(int stops);
+
+        void setNeedDeposit(bool needDeposit);
 
         // controlla se questo treno parte prima di t
         bool isFirst(Train& t);
@@ -96,6 +94,8 @@ class Train
         bool stopLocal = false;
         // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
         int type = 0;
+        // se deve andare al deposito alla prossima stazione
+        bool needDeposit = false;
         // variabile per indicare se un treno è nel deposito o no
         bool deposit = false;
         // numero stazioni attraversate
@@ -107,8 +107,6 @@ class Train
         std::vector<int> path;
         // utile a gestire il caso di due stazioni distanti 20km
         int nextBinary = 0;
-        // salva la velocità che il treno avrà al di fuori della stazione
-        double nextSpeed = 0;
         // numero di volte in cui il treno si ferma per far scendere i passeggeri
         int stops = 0;
 };

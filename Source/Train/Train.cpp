@@ -74,11 +74,6 @@ int Train::getTrainCode() const
     return trainCode;
 }
 
-int Train::getMaxSpeed() const
-{
-    return maxSpeed;
-}
-
 double Train::getCurrSpeed() const
 {
     return currSpeed;
@@ -109,21 +104,22 @@ int Train::getStops() const
     return stops;
 }
 
-double Train::getNextSpeed() const
+bool Train::isNeedDeposit() const
 {
-    return nextSpeed;
+    return needDeposit;
+}
+
+bool Train::isFirst(Train& t)
+{
+    return ((path[0]) < (t.getPath()[0]));
 }
 
 // setter functions
 void Train::setCurrSpeed(double cs)
 {
-    if (cs < 0)
-        throw std::length_error("La velocita' di crociera non puo' essere negativa. Imposta un valore positivo.\n");
-    else if (cs > maxSpeed)
-        throw std::length_error(
-                "La velocita' di crociera non puo' essere maggiore di quella massima. Imposta un valore coerente con il tipo di treno.\n");
-    else
-        currSpeed = cs;
+    if (cs < 0) cs = 0;
+    else if (cs > maxSpeed) cs = maxSpeed;
+    else currSpeed = cs;
 }
 
 void Train::setDistance(double d)
@@ -185,20 +181,14 @@ void Train::setNextBinary(int nb)
     nextBinary = nb;
 }
 
-void Train::setNextSpeed(double ns)
-{
-    nextSpeed = ns;
-}
-
 void Train::setStops(int s)
 {
     stops = s;
 }
 
-
-bool Train::isFirst(Train& t)
+void Train::setNeedDeposit(bool nd)
 {
-    return ((path[0]) < (t.getPath()[0]));
+    needDeposit = nd;
 }
 
 // overload operatori
