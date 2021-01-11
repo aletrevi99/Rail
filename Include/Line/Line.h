@@ -49,6 +49,7 @@ class Line{
         void update_speed(Train& t);                                                            //aggiornamento delle velocità dei singoli treni
         int next_Principal_Station(Train& t);                                                   //indica la prossima stazione principale che un treno incontra
         bool distance_check(Train& t, int position_in_active_trains);                           //controlla che i treni non abbiano una distanza tra di loro inferiore ai 10km
+        //void check10km(Train& t);
     
 };
 
