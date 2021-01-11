@@ -94,13 +94,16 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         }
         cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
 
-        if(t.getPassedStations() != 0) {                //segnalazione ritardo alla stazione
-            if (t.getType() == 1){
+       if(t.getPassedStations() != 0) {                                //segnalazione ritardo alla stazione
+          if (t.getType() == 1) {
+             if((m - t.getPath()[t.getPassedStations()]) > 0)
                 cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getPassedStations()] << " min" << endl;
-            }else{
-                cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getStops() + 1] << " min" << endl;
-            }
-        }
+
+          }
+          else
+          if((m - t.getPath()[t.getStops() + 1]) > 0)
+             cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getStops() + 1] << " min" << endl;
+       }
 
         if(stations[ns-1].get_Station_distance() == s.get_Station_distance()){
             t.setStatus(5);
