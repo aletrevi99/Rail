@@ -1,6 +1,6 @@
 # Alessandro Trevisan 1221819
 
-project(Assegnamento2)
+project(Rail)
 cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -9,7 +9,7 @@ include_directories(Include/Train
         Include/Station
         Include/Data
         Include/Deposit
-        Include/Rail
+        Include/Line
         )
 
 add_library(Train Include/Train/Train.h
@@ -28,18 +28,18 @@ add_library(Deposit Include/Deposit/Deposit.h
         Source/Deposit/Deposit.cpp
         )
 
-add_library(Rail Include/Rail/Rail.h
-        Source/Rail/Rail.cpp
+add_library(Line Include/Line/Line.h
+        Source/Line/Line.cpp
         )
 
-add_executable(Assegnamento2 main.cpp
-        Source/Rail/Rail.cpp
+add_executable(Rail main.cpp
+        Source/Line/Line.cpp
         Source/Deposit/Deposit.cpp
         Source/Data/Data.cpp
         Source/Station/Station.cpp
         Source/Train/Train.cpp
         )
 
-target_link_libraries (Assegnamento2 Rail Deposit Train Data Station)
+target_link_libraries(Rail Line Deposit Train Data Station)
 
 # Alessandro Trevisan 1221819

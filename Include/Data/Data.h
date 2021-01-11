@@ -21,7 +21,7 @@ class Data {
    
    public:
    //class constructor
-   Data(); //controlla la validità dei dati e riempie i vettori da usare nella classe Rail con i treni e le stazioni prese dai file input
+   Data(); //controlla la validità dei dati e riempie i vettori da usare nella classe Line con i treni e le stazioni prese dai file input
 
    void print(); //stampa il contenuto della timetable corretta
    
