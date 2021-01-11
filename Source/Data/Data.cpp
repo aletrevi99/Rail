@@ -6,21 +6,13 @@ using namespace std;
 Data::Data() {
    number_of_principal_stations = 0;
    number_of_local_stations = 0;
-   number_of_regional_trains = 0;
-   number_of_highspeed_trains = 0;
-   number_of_superhighspeed_trains = 0;
    flag = false;
+
    readStations();
    readTrains();
    sort();
-
-   rev_st = st;   //riempimento del vettore di stazioni rovesciato
-   int n = number_of_local_stations + number_of_principal_stations;
-   int m = rev_st[n - 1].get_Station_distance();
-   reverse(rev_st.begin(), rev_st.end());
-
-   for (int i = 0; i < n; i++)
-      rev_st[i].set_Station_distance(m - rev_st[i].get_Station_distance());
+   last_arrival = findLastArrival();
+   reversedStationFiller();
 
    if (flag)
       print();
@@ -29,6 +21,7 @@ Data::Data() {
 //metodi pubblici
 
 void Data::print() {
+
    for (auto &i : tr)
       cout << i << endl;
 }
@@ -284,4 +277,30 @@ void Data::sort() {
       tr[min] = tr[i];
       tr[i] = tmp;
    }
+}
+
+int Data::findLastArrival() {
+
+   int max = 0;
+   vector<int> tmp;
+
+   for(auto & i : tr)
+      tmp.push_back(i.getPath().back());
+
+   std::sort(tmp.begin(), tmp.end());
+
+   max = tmp.back();
+
+   return max;
+};
+
+void Data::reversedStationFiller() {
+
+   rev_st = st;   //riempimento del vettore di stazioni rovesciato
+   int n = number_of_local_stations + number_of_principal_stations;
+   int m = rev_st[n - 1].get_Station_distance();
+   reverse(rev_st.begin(), rev_st.end());
+
+   for (int i = 0; i < n; i++)
+      rev_st[i].set_Station_distance(m - rev_st[i].get_Station_distance());
 }

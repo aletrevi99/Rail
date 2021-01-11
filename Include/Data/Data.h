@@ -39,6 +39,7 @@ class Data {
    int number_of_regional_trains;
    int number_of_highspeed_trains;
    int number_of_superhighspeed_trains;
+   int last_arrival;
    std::vector<int> distances;  //vettore contenente le distanze tra le stazioni
    std::vector<int> principal_distances; //vettore contenente le distanze tra le stazioni principali
    
@@ -48,6 +49,8 @@ class Data {
    void readTrains();  //legge i treni dal file timetables.txt e li salva in tr con gli orari corretti
    void pathChecker(std::vector<int>& p, int t,int dir); //funzione che controlla la veridicità del percorso da inserire
    void sort();  //funzione che ordina il vector tr a seconda dell'orario di partenza dei treni. da sx a dx si hanno orari crescenti.
+   int findLastArrival(); //trova l'orario maggiore tra i dati in input
+   void reversedStationFiller(); // popola il vettore rev_st
 };
 
 #endif //ASSEGNAMENTO_2_DATA_H
