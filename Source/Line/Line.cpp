@@ -403,10 +403,10 @@ int Line::next_Principal_Station(Train& t){
 
 bool Line::distance_check(Train& t, int position_in_active_trains){
     for(int i=0; i<active_trains.size(); i++){
-        
+
         //cout << "Distanza treno " << t.getTrainCode() << ": " << t.getDistance() << endl;
         //cout << "Distanza treno " << t.getTrainCode() << " dal treno " << active_trains[i].getTrainCode() << ": " << active_trains[i].getDistance() - t.getDistance() << endl;
-        
+
         if((fabs(active_trains[i].getDistance() - t.getDistance() )<= 10) && (i != position_in_active_trains)){
             return false;
         }
@@ -445,6 +445,21 @@ void Line::simulation(){
             update_speed(active_trains[t]);
 
         }
+        for (int j = 0; j < active_trains.size(); ++j)
+        {
+            check10km(active_trains[j]);
+        }
     }
     cout << "\n\t\t\t\t\t\t\t\tEND\n";
+}
+
+void Line::check10km(Train& t)
+{
+    for (int i = 0; i < active_trains.size(); i++){
+        if (((active_trains[i].getDistance() - t.getDistance()) <= 15 && (active_trains[i].getDistance() - t.getDistance() > 0)) &&  // 15 per evitare che vadano oltre ai 10 km di distanza
+            (active_trains[i].isDirection() == t.isDirection()) &&
+            (active_trains[i].getBinary() == 0)){
+            t.setCurrSpeed(active_trains[i].getCurrSpeed());
+        }
+    }
 }
