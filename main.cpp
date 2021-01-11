@@ -16,8 +16,8 @@ int main(){
      * Dopo aver creato un oggetto della classe Line, infatti, ne chiamiamo la funzione simulation che simulerà
      * il funzionamento della linea ferroviaria nell'arco della giornata. */
     
-    Line r;
-    r.simulation();
+    Line l;
+    l.simulation();
     
     return 0;
 }
