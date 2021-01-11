@@ -7,8 +7,8 @@
  * Data di creazione: 30/12/2020
 */
 
-#ifndef ASSEGNAMENTO_2_RAIL_H
-#define ASSEGNAMENTO_2_RAIL_H
+#ifndef ASSEGNAMENTO_2_LINE_H
+#define ASSEGNAMENTO_2_LINE_H
 
 #include <iostream>
 #include <vector>
@@ -21,18 +21,18 @@
 #include "Deposit.h"
 #include "Data.h"
 
-class Rail{
+class Line{
     
     public:
-        Rail();
-        ~Rail() = default;
-        void simulation();
+        Line();                 //costruttore
+        ~Line() = default;      //distruttore
+        void simulation();      //funzione che simula il funzionamento giornaliero della linea ferroviaria
     
     private:
-        std::vector<Station> stations;
-        std::vector<Train> trains;
-        std::vector<Train> active_trains;
-        std::vector<int> principal_distances;
+        std::vector<Station> stations;                  //vettore di oggetti di tipo Station contenente le stazioni della linea ferroviaria
+        std::vector<Train> trains;                      //vettore di oggetti di tipo Train contenente i treni della linea ferroviaria
+        std::vector<Train> active_trains;               //vettore di oggetti di tipo Train contenente i treni attualmente in viaggio sulla linea ferroviaria
+        std::vector<int> principal_distances;           //vettore di int contenente le distanze tra le stazioni principali 
         std::vector<int> reverse_principal_distances;
         Data da;
         int ns;                                 //number of stations
@@ -55,4 +55,4 @@ class Rail{
     
 };
 
-#endif //ASSEGNAMENTO2_RAIL_H
+#endif //ASSEGNAMENTO2_LINE_H
