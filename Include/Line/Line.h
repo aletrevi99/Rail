@@ -32,26 +32,23 @@ class Line{
         std::vector<Station> stations;                  //vettore di oggetti di tipo Station contenente le stazioni della linea ferroviaria
         std::vector<Train> trains;                      //vettore di oggetti di tipo Train contenente i treni della linea ferroviaria
         std::vector<Train> active_trains;               //vettore di oggetti di tipo Train contenente i treni attualmente in viaggio sulla linea ferroviaria
-        std::vector<int> principal_distances;           //vettore di int contenente le distanze tra le stazioni principali 
-        std::vector<int> reverse_principal_distances;
-        Data da;
-        int ns;                                 //number of stations
-        int nt;                                 //number of trains
-        const int CROSSING_TIME = 4;            //tempo per fare 5 km a 80 km/h (approssimato)
-        void change_v(Train& t, double v);         //cambia istantaneamente la velocità del treno
-        int get_minutes(Train& t, double d);       //quanti minuti ci mette un treno per percorrere una certa distanza
-        double get_km(Train& t, double m);            //quanti km percorre un treno in m minuti
-        void get_station_binary(Train& t, Station& s, int m, double d);  //comunica al treno il binario in cui fermarsi
-        void train_arrival(Train& t, Station& s, int m, double d);                              //velocità treno = 0
-        void train_departure(Train& t, Station& s, int m, int position_in_active_trains);       //velocità treno = 80
-        void station_entry(Train& t, Station& s, int m, double d);
-        void station_exit(Train& t, Station& s, int m, double d);
-        void go_trought(Train& t, Station& s, int m);
-        void finish(Train& t, Station& s, int m);
-        void update_distance(Train& t);
-        void update_speed(Train& t);
-        int next_Principal_Station(Train& t);
-        bool distance_check(Train& t, int position_in_active_trains);
+        std::vector<int> principal_distances;           //vettore di int contenente le distanze tra le stazioni principali (dir.: da st. origine a capolinea)
+        std::vector<int> reverse_principal_distances;   //vettore di int contenente le distanza tra le stazioni principali (dir.: da capolinea a st. origine)
+        Data da;                                        //oggetto di tipo data
+        int ns;                                         //numero di stazioni presenti nella linea ferroviaria
+        int nt;                                         //numero di treni presenti nella linea ferroviaria
+        double get_km(Train& t, double m);                                                      //calcola quanti km percorre un treno in m minuti
+        void get_station_binary(Train& t, Station& s, int m, double d);                         //segnalazione di un treno ai -20km da una stazione
+        void train_arrival(Train& t, Station& s, int m, double d);                              //arrivo di un treno in una stazione
+        void train_departure(Train& t, Station& s, int m, int position_in_active_trains);       //partenza di un treno da una stazione
+        void station_entry(Train& t, Station& s, int m, double d);                              //entrata di un treno nei binari di una stazione (-5km dalla stazione)
+        void station_exit(Train& t, Station& s, int m, double d);                               //uscita di un treno dai binari di una stazione (+5km dalla stazione)
+        void go_trought(Train& t, Station& s, int m);                                           //treno "passa oltre" una stazione (senza fermarsi)
+        void finish(Train& t, Station& s, int m);                                               //un treno conclude la sua corsa
+        void update_distance(Train& t);                                                         //aggiornamento delle distaamze percorse dai singoli treni
+        void update_speed(Train& t);                                                            //aggiornamento delle velocità dei singoli treni
+        int next_Principal_Station(Train& t);                                                   //indica la prossima stazione principale che un treno incontra
+        bool distance_check(Train& t, int position_in_active_trains);                           //controlla che i treni non abbiano una distanza tra di loro inferiore ai 10km
     
 };
 

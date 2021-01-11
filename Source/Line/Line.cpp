@@ -13,6 +13,11 @@ using namespace std;
 
 Line::Line(){
     
+    /* Costruttore della linea ferroviaria.
+     * Vengono utilizzate le funzioni getStation() e getTrains() della classe Data per salvare stazioni e treni letti dai file timetables.txt e 
+     * line_description.txt nelle variabili stations e trains. Vengono settate ns e nt alle dimensioni rispettivamente di stations e trains.
+     * Vengono inoltre riempiti principal_distances e reverse_principal_distances con i valori della distanze tra le varie stazioni. */
+    
     stations = da.getStation();
     trains = da.getTrains();
     
@@ -25,32 +30,42 @@ Line::Line(){
     
 }
 
-void Line::change_v(Train& t, double v){
-    t.setCurrSpeed(v);
-}
-
-int Line::get_minutes(Train& t, double d){
-    int m;
-    m = round((d/t.getCurrSpeed())*60);
-    return m;
-}
-
 double Line::get_km(Train& t, double m){
-    double n;
-    n = (t.getCurrSpeed()*(m/60));
-    return n;
+    
+    /* La funzione get_km() calcola quanti km percorre un treno, alla sua attuale velocità di crociera, in un dato intervallo
+     * di tempo, identificato dal parametro m che viene fornito. */
+    
+    double k;
+    k = (t.getCurrSpeed()*(m/60));
+    return k;
 }
 
-void Line::get_station_binary(Train& t, Station& s, int m, double d){        //da usare a 20km dalla stazione quando treno manda segnalazione
+void Line::get_station_binary(Train& t, Station& s, int m, double d){
+    
+    /* La funzione get_station_binary() gestisce la segnalazione che un treno fa alla stazione successiva quando si trova a -20km di distanza da essa.
+     * Se lo stato del treno è 3 (ovvero coerente con la prossima azione che il treno deve "compiere", la segnalazione appunto) e se il treno si
+     * trova ai -20km dalla stazione, la stazione gestisce la richiesta inviatagli dal treno indicando ad esso il binario su cui transitare e fermarsi,
+     * oppure lo avvisa che sarà necessario sostare nel deposito nel caso i binari siano già occupati.
+     * Il parametro m che viene passato indica il minuto in cui viene chiamata la funzione, mentre d indica la distanza percorsa dal treno fino al minuto
+     * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno si trova alla distanza giusta da cui segnalare. */
+    
     bool p = false;
     if(((s.get_Station_distance() - d) >= 20) && ((s.get_Station_distance() - t.getDistance()) <= 20)){
         p = true;
     }
     if(t.getStatus() == 3 && (p || (t.getDistance() == 0))){
+        
+        /* Se il treno non è un treno regionale e la stazione è una stazione locale, il treno non entra nei binari di quella stazione, continua a viaggiare
+         * nei binari di transito e non si ferma in quella stazione. */
+         
         if((!(t.isStopLocal())) && (s.get_Station_type())){
             t.setBinary(0);
             go_trought(t, s, m);
         }else{
+            
+            /* Se il treno viaggia dalla stazione di origine verso il capolinea, viene verificata la disponibilità dei binari 1 e 2. Se uno dei due binari è
+             * libero, viene comunicato al treno come binario su cui fermarsi, altrimenti il treno dovrà entra nel deposito d1. */
+            
             if(t.isDirection()){
                 if(s.get_stb1_status()){
                     t.setBinary(1);
@@ -63,6 +78,10 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){        //d
                     }
                 }
             }else{
+                
+                /* Se il treno viaggia dal capolinea verso la stazione di origine, viene verificata la disponibilità dei binari 3 e 4. Se uno dei due binari è
+                 * libero, viene comunicato al treno come binario su cui fermarsi, altrimenti il treno dovrà entra nel deposito d2. */
+                 
                 if(s.get_stb3_status()){
                     t.setBinary(3);
                 }else{
@@ -75,36 +94,53 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){        //d
                 }
             }
             cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " avvisa la stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
-            t.setStatus(4);
+            t.setStatus(4);         //next step: entrare nei binari di una stazione (ai -5km da essa)
         }
     }
 }
 
 void Line::train_arrival(Train& t, Station& s, int m, double d){
+    
+    /* La funzione train_arrival() gestisce l'arrivo di un treno in una stazione.
+     * Se lo stato del treno è 0 (ovvero coerente con la prossima azione che il treno deve "compiere", l'arrivo in una stazione appunto) e se il treno è
+     * arrivato alla stazione, esso si ferma alla stazione per la salita/discesa dei passeggeri.
+     * Il parametro m che viene passato indica il minuto in cui viene chiamata la funzione, mentre d indica la distanza percorsa dal treno fino al minuto
+     * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno è effettivamente arrivato alla stazione. */ 
+    
     bool p = false;
     if(s.get_Station_distance() - d >= 0 && s.get_Station_distance() - t.getDistance() <= 0){
         p = true;
     }
     if(t.getStatus() == 0 && p){
+        
+        //Se il treno è arrivato alla stazione, viene aggiornata la distanza che ha percorso ponendola uguale alla distanza della stazione.
         t.setDistance(s.get_Station_distance());
-        //change_v(t, 0);
+        
+        /* Se il treno deve ancora partire, viene "virtualmente" fatto arrivare al binario della stazione e segnala alla stazione la sua partenza,
+         * chiedendo il binario da cui deve partire. */
         if(t.getPassedStations() == 0){
             t.setStatus(3);
             get_station_binary(t, s, m, 0);
         }
         cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
-
-       if(t.getPassedStations() != 0) {                                //segnalazione ritardo alla stazione
-          if (t.getType() == 1) {
-             if((m - t.getPath()[t.getPassedStations()]) > 0)
-                cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getPassedStations()] << " min" << endl;
-
-          }
-          else
-          if((m - t.getPath()[t.getStops() + 1]) > 0)
-             cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getStops() + 1] << " min" << endl;
-       }
-
+        
+        /* Se il treno arriva alla stazione dopo rispetto all'orario indicato nella rispettiva timetable, tale differenza di orario viene identificata come
+         * ritardo con cui il treno arriva alla stazione. */
+        
+        if(t.getPassedStations() != 0){
+            if (t.getType() == 1){
+                if((m - t.getPath()[t.getPassedStations()]) > 0){
+                    cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getPassedStations()] << " min" << endl;
+                }
+            }else{
+                if((m - t.getPath()[t.getStops() + 1]) > 0){
+                    cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getStops() + 1] << " min" << endl;
+                } 
+            }
+        }
+        
+        //Se il treno è arrivato all'ultima stazione della linea ferroviaria, termina la sua corsa.
+        
         if(stations[ns-1].get_Station_distance() == s.get_Station_distance()){
             t.setStatus(5);
         }
@@ -113,7 +149,10 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
             return;
         }
         
-        int g = t.getBinary();
+        /* Se la prossima stazione si trova esattamente a 20km di distanza da quella in cui è arrivato il treno, esso, contemporaneamente al suo arrivo
+         * deve avvisare la stazione successiva, chiedendo un binario nel caso si debba fermare o avvisando del suo passaggio. */
+        
+        int g = t.getBinary();          //viene salvato il binario attuale del treno
         vector<Station> st = stations;
         if(!t.isDirection()){
             st = da.get_reversed_Station();
@@ -121,19 +160,19 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         if((st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance()) == 20){
             t.setStatus(3);
             get_station_binary(t, st[t.getPassedStations()+1], m, t.getDistance());
-            int l = t.getBinary();
+            int l = t.getBinary();      //binario in cui il treno dovrà fermarsi nella prossima stazione
             t.setNextBinary(l);
-            t.setBinary(g);
+            t.setBinary(g);             //viene ri-settato il binario su cui è attualment il treno
         }
-        t.setMinutes(m);
-        t.setStatus(1);
+        
+        t.setMinutes(m);                //viene salvato il minuto di arrivo del treno alla stazione
+        t.setStatus(1);                 //next step: partire dalla stazione
     }
 }
 
 void Line::train_departure(Train& t, Station& s, int m, int position_in_active_trains){
     bool flag = distance_check(t, position_in_active_trains);
     if(t.getStatus() == 1 && flag){
-        //t.setCurrSpeed(80);
         if(t.getPassedStations() == 0){
             cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
             t.setStatus(2);
@@ -157,7 +196,6 @@ void Line::station_entry(Train& t, Station& s, int m, double d){
         p = true;
     }
     if(t.getStatus() == 4 && p){
-        //change_v(t, 80);
         if(t.getBinary() == 1){
             s.set_stb1_status(false);
         }else{
@@ -194,7 +232,6 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
     }
     if(t.getStatus() == 2 && p){
         cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " lascia il binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
-        //change_v(t, t.getMaxSpeed());
         if(t.getBinary() == 1){
             s.set_stb1_status(true);
             t.setBinary(0);
@@ -235,10 +272,8 @@ void Line::go_trought(Train& t, Station& s, int m){
 }
 
 void Line::finish(Train& t, Station& s, int m){
-    //change_v(t, 0);
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
     active_trains.erase(active_trains.begin());
-    //t.setStatus(5);       inutile, lo stato è già 5
 }
 
 void Line::update_distance(Train& t){
