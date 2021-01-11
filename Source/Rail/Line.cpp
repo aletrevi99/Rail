@@ -7,11 +7,11 @@
  * Data di creazione: 30/12/2020
 */
 
-#include "Rail.h"
+#include "Line.h"
 
 using namespace std;
 
-Rail::Rail(){
+Line::Line(){
     
     stations = da.getStation();
     trains = da.getTrains();
@@ -25,23 +25,23 @@ Rail::Rail(){
     
 }
 
-void Rail::change_v(Train& t, double v){
+void Line::change_v(Train& t, double v){
     t.setCurrSpeed(v);
 }
 
-int Rail::get_minutes(Train& t, double d){
+int Line::get_minutes(Train& t, double d){
     int m;
     m = round((d/t.getCurrSpeed())*60);
     return m;
 }
 
-double Rail::get_km(Train& t, double m){
+double Line::get_km(Train& t, double m){
     double n;
     n = (t.getCurrSpeed()*(m/60));
     return n;
 }
 
-void Rail::get_station_binary(Train& t, Station& s, int m, double d){        //da usare a 20km dalla stazione quando treno manda segnalazione
+void Line::get_station_binary(Train& t, Station& s, int m, double d){        //da usare a 20km dalla stazione quando treno manda segnalazione
     bool p = false;
     if(((s.get_Station_distance() - d) >= 20) && ((s.get_Station_distance() - t.getDistance()) <= 20)){
         p = true;
@@ -80,7 +80,7 @@ void Rail::get_station_binary(Train& t, Station& s, int m, double d){        //d
     }
 }
 
-void Rail::train_arrival(Train& t, Station& s, int m, double d){
+void Line::train_arrival(Train& t, Station& s, int m, double d){
     bool p = false;
     if(s.get_Station_distance() - d >= 0 && s.get_Station_distance() - t.getDistance() <= 0){
         p = true;
@@ -94,13 +94,12 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
         }
         cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
 
-        if(t.getPassedStations() != 0) {                                //segnalazione ritardo alla stazione
-            if (t.getType() == 1)
-                cout << "Il treno" << t.getTrainCode() << " segnala che ha un ritardo di "
-                     << m - t.getPath()[t.getPassedStations()] << " min" << endl;
-            else
-                cout << "Il treno" << t.getTrainCode() << " segnala che ha un ritardo di "
-                     << m - t.getPath()[t.getStops() + 1] << " min" << endl;
+        if(t.getPassedStations() != 0) {                //segnalazione ritardo alla stazione
+            if (t.getType() == 1){
+                cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getPassedStations()] << " min" << endl;
+            }else{
+                cout << "Il treno " << t.getTrainCode() << " segnala che ha un ritardo di " << m - t.getPath()[t.getStops() + 1] << " min" << endl;
+            }
         }
 
         if(stations[ns-1].get_Station_distance() == s.get_Station_distance()){
@@ -128,7 +127,7 @@ void Rail::train_arrival(Train& t, Station& s, int m, double d){
     }
 }
 
-void Rail::train_departure(Train& t, Station& s, int m, int position_in_active_trains){
+void Line::train_departure(Train& t, Station& s, int m, int position_in_active_trains){
     bool flag = distance_check(t, position_in_active_trains);
     if(t.getStatus() == 1 && flag){
         //t.setCurrSpeed(80);
@@ -149,7 +148,7 @@ void Rail::train_departure(Train& t, Station& s, int m, int position_in_active_t
     }*/
 }
 
-void Rail::station_entry(Train& t, Station& s, int m, double d){
+void Line::station_entry(Train& t, Station& s, int m, double d){
     bool p = false;
     if(s.get_Station_distance() - d >= 5 && s.get_Station_distance() - t.getDistance() <= 5){
         p = true;
@@ -185,7 +184,7 @@ void Rail::station_entry(Train& t, Station& s, int m, double d){
     }
 }
 
-void Rail::station_exit(Train& t, Station& s, int m, double d){
+void Line::station_exit(Train& t, Station& s, int m, double d){
     bool p = false;
     if(d - s.get_Station_distance() <= 5 && t.getDistance() - s.get_Station_distance() >= 5){
         p = true;
@@ -226,25 +225,25 @@ void Rail::station_exit(Train& t, Station& s, int m, double d){
     }
 }
 
-void Rail::go_trought(Train& t, Station& s, int m){
+void Line::go_trought(Train& t, Station& s, int m){
     t.setPassedStations(t.getPassedStations() + 1);
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " comunica che non si fermera' alla stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
     t.setStatus(3);
 }
 
-void Rail::finish(Train& t, Station& s, int m){
+void Line::finish(Train& t, Station& s, int m){
     //change_v(t, 0);
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
     active_trains.erase(active_trains.begin());
     //t.setStatus(5);       inutile, lo stato è già 5
 }
 
-void Rail::update_distance(Train& t){
+void Line::update_distance(Train& t){
     double k = get_km(t, 1);
     t.setDistance(t.getDistance() + k);
 }
 
-void Rail::update_speed(Train& t){
+void Line::update_speed(Train& t){
     //controllare se ha un treno davanti a meno di 10km
 
     if(t.getStatus() != 5){
@@ -341,7 +340,7 @@ void Rail::update_speed(Train& t){
     }
 }
 
-int Rail::next_Principal_Station(Train& t){
+int Line::next_Principal_Station(Train& t){
     int i=0;
     vector<Station> st = stations;
     if(!t.isDirection()){
@@ -364,7 +363,7 @@ int Rail::next_Principal_Station(Train& t){
     return ns-1;
 }
 
-bool Rail::distance_check(Train& t, int position_in_active_trains){
+bool Line::distance_check(Train& t, int position_in_active_trains){
     for(int i=0; i<active_trains.size(); i++){
         
         //cout << "Distanza treno " << t.getTrainCode() << ": " << t.getDistance() << endl;
@@ -377,9 +376,9 @@ bool Rail::distance_check(Train& t, int position_in_active_trains){
     return true;
 }
 
-void Rail::simulation(){
+void Line::simulation(){
     cout << "\n\t\t\t\t\t\t\t\tSTART\n\n";
-    for(int i=385; i<3000; i++){            //mettere a 0 !!!!
+    for(int i=120; i<3000; i++){            //mettere a 0 !!!!
 
         for(int t=0; t<nt; t++){
             if(trains[t].getPath()[0] == i){
@@ -405,7 +404,7 @@ void Rail::simulation(){
             station_exit(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             get_station_binary(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
 
-                update_speed(active_trains[t]);
+            update_speed(active_trains[t]);
 
         }
     }
