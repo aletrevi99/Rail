@@ -1,3 +1,8 @@
+/*
+ * @author Giacomo Checchini
+ * n.m. 1216347
+ */
+
 #include "Data.h"
 
 using namespace std;
@@ -50,7 +55,7 @@ int Data::getLastArrival() const {
 void Data::readStations() {
 
    ifstream file;
-   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/line_description_1.txt");
+   file.open("../line_description.txt");
    if (file.is_open())
       cout << "\nline_description.txt aperto con successo.";
    if (!file.is_open())
@@ -109,7 +114,7 @@ void Data::readStations() {
 void Data::readTrains() {
 
    ifstream file;
-   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/timetables.txt");
+   file.open("../timetables_3.txt");
    if (file.is_open())
       cout << "\ntimetables.txt aperto con successo.\n" << endl;
    if (!file.is_open())
@@ -129,13 +134,6 @@ void Data::readTrains() {
          ss >> train_code;
          ss >> train_direction;
          ss >> train_type;
-
-         //controllo sui valori del file input
-         if (!((train_type == 1) || (train_type == 2) || (train_type == 3)))
-            throw exception();
-
-         if (!((train_direction == 0) || (train_direction == 1)))
-            throw exception();
 
          n = number_of_principal_stations;
 
@@ -161,23 +159,29 @@ void Data::readTrains() {
       //controllo su orari di arrivo
       pathChecker(path, train_type, train_direction);
 
-      if (train_type == 1) {
-         Regional_Train t1(train_code, direction, path);
+      if (((train_type == 1) || (train_type == 2) || (train_type == 3)) && ((train_direction == 0) || (train_direction == 1)))
+      {
+          if (train_type == 1)
+          {
+              Regional_Train t1(train_code, direction, path);
 
-         if (t1.getPath()[0] <= 1440)
-            tr.push_back(t1);
-      } else if (train_type == 2) {
-         High_Speed_Train t2(train_code, direction, path);
+              if (t1.getPath()[0] <= 1440)
+                  tr.push_back(t1);
+          } else if (train_type == 2)
+          {
+              High_Speed_Train t2(train_code, direction, path);
 
-         if (t2.getPath()[0] <= 1440)
-            tr.push_back(t2);
-      } else {
-         Super_High_Speed_Train t3(train_code, direction, path);
+              if (t2.getPath()[0] <= 1440)
+                  tr.push_back(t2);
+          } else
+          {
+              Super_High_Speed_Train t3(train_code, direction, path);
 
-         if (t3.getPath()[0] <= 1440)
-            tr.push_back(t3);
+              if (t3.getPath()[0] <= 1440)
+                  tr.push_back(t3);
+          }
       }
-      path.clear();
+       path.clear();
    }
    file.close();
 }
@@ -302,9 +306,9 @@ void Data::reversedStationFiller() {
 
    rev_st = st;   //riempimento del vettore di stazioni rovesciato
    int n = number_of_local_stations + number_of_principal_stations;
-   int m = rev_st[n - 1].get_Station_distance();
+   int m = rev_st[n - 1].getStationDistance();
    reverse(rev_st.begin(), rev_st.end());
 
    for (int i = 0; i < n; i++)
-      rev_st[i].set_Station_distance(m - rev_st[i].get_Station_distance());
+       rev_st[i].setStationDistance(m - rev_st[i].getStationDistance());
 }

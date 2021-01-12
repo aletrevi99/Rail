@@ -60,7 +60,7 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){
      * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno si trova alla distanza giusta da cui segnalare. */
     
     bool p = false;
-    if(((s.get_Station_distance() - d) >= 20) && ((s.get_Station_distance() - t.getDistance()) <= 20)){
+    if(((s.getStationDistance() - d) >= 20) && ((s.getStationDistance() - t.getDistance()) <= 20)){
         p = true;
     }
     if(t.getStatus() == 3 && (p || (t.getDistance() == 0))){
@@ -68,7 +68,7 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){
         /* Se il treno non è un treno regionale e la stazione è una stazione locale, il treno non entra nei binari di quella stazione, continua a viaggiare
          * nei binari di transito e non si ferma in quella stazione. */
          
-        if((!(t.isStopLocal())) && (s.get_Station_type())){
+        if((!(t.isStopLocal())) && (s.isLocal())){
             t.setBinary(0);
             go_trought(t, s, m);
         }else{
@@ -77,14 +77,14 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){
              * libero, viene comunicato al treno come binario su cui fermarsi, altrimenti il treno dovrà entra nel deposito d1. */
             
             if(t.isDirection()){
-                if(s.get_stb1_status()){
+                if(s.isStb1Status()){
                     t.setBinary(1);
                 }else{
-                    if(s.get_stb2_status()){
+                    if(s.isStb2Status()){
                         t.setBinary(2);
                     }else{
                         t.setBinary(5);     //binari occupati, al deposito!
-                        s.add_to_Deposit(t);
+                        s.addToDeposit(t);
                     }
                 }
             }else{
@@ -92,20 +92,20 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){
                 /* Se il treno viaggia dal capolinea verso la stazione di origine, viene verificata la disponibilità dei binari 3 e 4. Se uno dei due binari è
                  * libero, viene comunicato al treno come binario su cui fermarsi, altrimenti il treno dovrà entra nel deposito d2. */
                  
-                if(s.get_stb3_status()){
+                if(s.isStb3Status()){
                     t.setBinary(3);
                 }else{
-                    if(s.get_stb4_status()){
+                    if(s.isStb4Status()){
                         t.setBinary(4);
                     }else{
                         t.setBinary(5);     //binari occupati, al deposito!
-                        s.add_to_Deposit(t);
+                        s.addToDeposit(t);
                     }
                 }
             }
             
-            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " avvisa la stazione di " << s.get_Station_name() << ".\n";
-            cout << "Al minuto " << m << " la stazione di " << s.get_Station_name() << " avvisa il treno " << t.getTrainCode() << " che dovra' fermarsi al binariro: " << t.getBinary() << ".\n"; //Bin. = 5 -> deposito
+            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " avvisa la stazione di " << s.getStationName() << ".\n";
+            cout << "Al minuto " << m << " la stazione di " << s.getStationName() << " avvisa il treno " << t.getTrainCode() << " che dovra' fermarsi al binariro: " << t.getBinary() << ".\n"; //Bin. = 5 -> deposito
             t.setStatus(4);         //next step: entrare nei binari di una stazione (ai -5km da essa)
         }
     }
@@ -120,13 +120,13 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
      * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno è effettivamente arrivato alla stazione. */
     
     bool p = false;
-    if(s.get_Station_distance() - d >= 0 && s.get_Station_distance() - t.getDistance() <= 0){
+    if(s.getStationDistance() - d >= 0 && s.getStationDistance() - t.getDistance() <= 0){
         p = true;
     }
     if(t.getStatus() == 0 && p){
         
         //Se il treno è arrivato alla stazione, viene aggiornata la distanza che ha percorso ponendola uguale alla distanza della stazione.
-        t.setDistance(s.get_Station_distance());
+        t.setDistance(s.getStationDistance());
         
         /* Se il treno deve ancora partire, viene "virtualmente" fatto arrivare al binario della stazione e segnala alla stazione la sua partenza,
          * chiedendo il binario da cui deve partire. */
@@ -134,7 +134,7 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
             t.setStatus(3);
             get_station_binary(t, s, m, 0);
         }
-        cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+        cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " arriva al binario " << t.getBinary() << " della stazione di " << s.getStationName() << ".\n";
         
         /* Se il treno arriva alla stazione dopo rispetto all'orario indicato nella rispettiva timetable, tale differenza di orario viene identificata come
          * ritardo con cui il treno arriva alla stazione. */
@@ -153,7 +153,7 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         
         //Se il treno è arrivato all'ultima stazione della linea ferroviaria, termina la sua corsa.
         
-        if(stations[ns-1].get_Station_distance() == s.get_Station_distance()){
+        if(stations[ns - 1].getStationDistance() == s.getStationDistance()){
             t.setStatus(5);
         }
         if(t.getStatus() == 5){
@@ -169,7 +169,7 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        int dist = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        int dist = st[t.getPassedStations() + 1].getStationDistance() - s.getStationDistance();
         if(dist == 20){
             t.setStatus(3);
             get_station_binary(t, st[t.getPassedStations()+1], m, t.getDistance());
@@ -192,11 +192,11 @@ void Line::train_departure(Train& t, Station& s, int m){
     
     if(t.getStatus() == 1){
         if(t.getPassedStations() == 0){
-            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.getStationName() << ".\n";
             t.setStatus(2);         //next step: uscire dai binari di una stazione (5km dopo di essa)
         }
         if(t.getMinutes() + 5 <= m){
-            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " parte dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " parte dal binario " << t.getBinary() << " della stazione di " << s.getStationName() << ".\n";
             t.setStops(t.getStops() + 1);       //viene aggiornato il counter delle fermate effettuate dal treno
             t.setStatus(2);                     //next step: uscire dai binari di una stazione (5km dopo di essa)
         }
@@ -215,27 +215,27 @@ void Line::station_entry(Train& t, Station& s, int m, double d){
      * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno è entrato nei binari della stazione. */
     
     bool p = false;
-    if(s.get_Station_distance() - d >= 5 && s.get_Station_distance() - t.getDistance() <= 5){
+    if(s.getStationDistance() - d >= 5 && s.getStationDistance() - t.getDistance() <= 5){
         p = true;
     }
     if(t.getStatus() == 4 && p){
         if(t.getBinary() == 1){
-            s.set_stb1_status(false);
+            s.setStb1Status(false);
         }else{
             if(t.getBinary() == 2){
-                s.set_stb2_status(false);
+                s.setStb2Status(false);
             }else{
                 if(t.getBinary() == 3){
-                    s.set_stb3_status(false);
+                    s.setStb3Status(false);
                 }else{
                     if(t.getBinary() == 4){
-                        s.set_stb4_status(false);
+                        s.setStb4Status(false);
                     }else{
                         if(t.getBinary() == 5){
                             t.setStatus(3);
                             get_station_binary(t, s, m, t.getDistance());
                             if(t.getBinary() != 5){
-                                s.remove_from_Deposit(t);
+                                s.removeFromDeposit(t);
                                 station_entry(t, s, m, t.getDistance());
                             }
                         }
@@ -243,7 +243,7 @@ void Line::station_entry(Train& t, Station& s, int m, double d){
                 }
             }
         }
-        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " entra nel binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " entra nel binario " << t.getBinary() << " della stazione di " << s.getStationName() << ".\n";
         t.setStatus(0);             //next step: arrivare in una stazione
     }
 }
@@ -257,25 +257,25 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
      * precedente e viene usata, confrontandola con la distanza attuale, per verificare se il treno è uscito dai binari della stazione. */
     
     bool p = false;
-    if(d - s.get_Station_distance() <= 5 && t.getDistance() - s.get_Station_distance() >= 5){
+    if(d - s.getStationDistance() <= 5 && t.getDistance() - s.getStationDistance() >= 5){
         p = true;
     }
     if(t.getStatus() == 2 && p){
-        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " lascia il binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " lascia il binario " << t.getBinary() << " della stazione di " << s.getStationName() << ".\n";
         if(t.getBinary() == 1){
-            s.set_stb1_status(true);
+            s.setStb1Status(true);
             t.setBinary(0);
         }else{
             if(t.getBinary() == 2){
-                s.set_stb2_status(true);
+                s.setStb2Status(true);
                 t.setBinary(0);
             }else{
                 if(t.getBinary() == 3){
-                    s.set_stb3_status(true);
+                    s.setStb3Status(true);
                     t.setBinary(0);
                 }else{
                     if(t.getBinary() == 4){
-                        s.set_stb4_status(true);
+                        s.setStb4Status(true);
                         t.setBinary(0);
                     }
                 }
@@ -291,7 +291,7 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        int dist = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        int dist = st[t.getPassedStations() + 1].getStationDistance() - s.getStationDistance();
         if(dist == 20){
             t.setStatus(4);                 //lo stato viene settato a 4 (entrata nei binari di una stazione) in quanto ha già segnalato in precedenza
             int l = t.getNextBinary();
@@ -309,7 +309,7 @@ void Line::go_trought(Train& t, Station& s, int m){
      * fermi. Viene aggiornato il counter delle stazioni passate ma non, logicamente, quello delle fermate compiute. */
     
     t.setPassedStations(t.getPassedStations() + 1);
-    //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " comunica che non si fermera' alla stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
+    //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " comunica che non si fermera' alla stazione di " << s.getStationName() << ". Bin.: " << t.getBinary() << ".\n";
     t.setStatus(3);             //next step: segnalare ad una stazione l'arrivo/passaggio
 }
 
@@ -318,23 +318,23 @@ void Line::finish(Train& t, Station& s, int m){
     /* La funzione finish() gestisce l'arrivo di un treno all'ultima stazione e, quindi la conclusione della sua corsa.
      * Il treno, una volta arrivato, viene eliminato dall'array contenente i treni attualmente in viaggio sulla linea ferroviaria. */
      
-    cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
+    cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.getStationName() << ".\n";
     
     //Viene "liberato" il binario su cui il treno è arrivato.
     if(t.getBinary() == 1){
-        s.set_stb1_status(true);
+        s.setStb1Status(true);
         t.setBinary(0);
     }else{
         if(t.getBinary() == 2){
-            s.set_stb2_status(true);
+            s.setStb2Status(true);
             t.setBinary(0);
         }else{
             if(t.getBinary() == 3){
-                s.set_stb3_status(true);
+                s.setStb3Status(true);
                 t.setBinary(0);
             }else{
                 if(t.getBinary() == 4){
-                    s.set_stb4_status(true);
+                    s.setStb4Status(true);
                     t.setBinary(0);
                 }
             }
@@ -376,11 +376,12 @@ void Line::update_speed(Train& t){
             
             if(t.getPassedStations() > 0){
                 int stop = 5;
-                if(t.getDistance() < (st[1].get_Station_distance())){
+                if(t.getDistance() < (st[1].getStationDistance())){
                     stop = 0;
                 }
                 m = t.getPath()[t.getPassedStations()] - (t.getPath()[t.getPassedStations()-1] + stop);
-                k = st[t.getPassedStations()].get_Station_distance() - st[t.getPassedStations()-1].get_Station_distance();
+                k = st[t.getPassedStations()].getStationDistance() -
+                    st[t.getPassedStations() - 1].getStationDistance();
                 v = (k/m)*60;
                 if (v > 160){
                     v = 160;
@@ -390,7 +391,7 @@ void Line::update_speed(Train& t){
                 
                 //Se il treno deve ancora partire.
                 m = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
-                k = st[t.getPassedStations()+1].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
+                k = st[t.getPassedStations() + 1].getStationDistance() - st[t.getPassedStations()].getStationDistance();
                 v = (k/m)*60;
                 if (v > 160){
                     v = 160;
@@ -422,7 +423,7 @@ void Line::update_speed(Train& t){
             //Se il treno non è regionale utilizzo stops come indice per scorrere l'array (path) contenente gli orari di fermata nelle varie stazioni.
             if(t.getPassedStations() > 0){
                 int stop = 5;
-                if(t.getDistance() < (st[1].get_Station_distance())){
+                if(t.getDistance() < (st[1].getStationDistance())){
                     stop = 0;
                 }
                 vector<int> r = principal_distances;
@@ -438,7 +439,7 @@ void Line::update_speed(Train& t){
                 //Se il treno deve ancora partire.
                 int p = next_Principal_Station(t);
                 m = t.getPath()[t.getPassedStations()+1] - (t.getPath()[t.getPassedStations()]);
-                k = st[p].get_Station_distance() - st[t.getPassedStations()].get_Station_distance();
+                k = st[p].getStationDistance() - st[t.getPassedStations()].getStationDistance();
                 v = (k/m)*60;
                 t.setCurrSpeed(v);
             }
@@ -482,7 +483,7 @@ int Line::next_Principal_Station(Train& t){
     //Se il treno deve ancora uscire dai binari della stazione, e quindi il passedStations deve ancora essere incrementato.
     if(t.getStatus() == 2){
         for(i=t.getPassedStations() + 1; i<ns; i++){
-            if(!(st[i].get_Station_type())){
+            if(!(st[i].isLocal())){
                 return i;
             }
         }
@@ -490,7 +491,7 @@ int Line::next_Principal_Station(Train& t){
         
         //Se il treno è già uscito dai binari della stazione, e quindi il passedStations è già stato incrementato.
         for(i=t.getPassedStations()-1; i<ns; i++){
-            if(!(st[i+1].get_Station_type())){
+            if(!(st[i + 1].isLocal())){
                 return i+1;
             }
         }

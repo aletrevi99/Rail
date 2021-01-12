@@ -1,38 +1,95 @@
-/*
- * Studente: Ghiotto Andrea
- * Matricola: 1216363
- * Corso: Laboratorio di Programmazione
- * Anno: 2°
- * Scuola: Ing. Informatica - UniPd
- * Data di creazione: 07/01/2020
-*/
+// Alessandro Trevisan 1221819
 
 #include "Station.h"
 
-void Station::add_to_Deposit(Train& t){
-    
-    /* La funzione add_to_Deposit() permette di aggiungere, usufruendo della funzione addTrain() della classe Deposit, un treno al deposito.
-     * Nello specifico, se il treno viaggia dalla stazione di origine verso il capolinea, viene aggiunto al deposito d1,
-     * altrimenti, viene aggiunto al deposito d2 (situato dopo la stazione se si procede da st. di origine a capolinea). */
-    
-    if(t.isDirection()){
-        d1.addTrain(t);
-    }else{
-        d2.addTrain(t);
-    }
+// costruttori
+Station::Station(std::string n, int d, bool loc)
+        : nameStation{std::move(n)}, stationDistance{d}, type{loc}, stb1{true}, stb2{true}, stb3{true}, stb4{true}
+{}
+
+Principal_Station::Principal_Station(std::string n, int d) : Station(std::move(n), d, false)
+{}
+
+Local_Station::Local_Station(std::string n, int d) : Station(std::move(n), d, true)
+{}
+
+// getter functions
+std::string Station::getStationName() const
+{
+    return nameStation;
 }
 
-Train Station::remove_from_Deposit(Train& t){
-    
-    /* La funzione remove_from_Deposit() permette di rimuovere un treno dal deposito.
-     * Il treno t passato come parametro serve per sapere se rimuovere dal deposito d1 (dir.: origine - capolinea) oppure se
-     * rimuovere dal deposito d2 (dir.: capolinea - origine).
-     * La funzione restituisce, usufruendo della funzione removeTrain() della classe Deposit, il treno che ha più priorità presente
-     * all'interno del singolo deposito. */
-    
-    if(t.isDirection()){
-        return d1.removeTrain();
-    }else{
-        return d2.removeTrain();
-    }
+int Station::getStationDistance() const
+{
+    return stationDistance;
 }
+
+bool Station::isLocal() const
+{
+    return type;
+}
+
+bool Station::isStb1Status() const
+{
+    return stb1;
+}
+
+bool Station::isStb2Status() const
+{
+    return stb2;
+}
+
+bool Station::isStb3Status() const
+{
+    return stb3;
+}
+
+bool Station::isStb4Status() const
+{
+    return stb4;
+}
+
+// setter functions
+void Station::setStationDistance(int d)
+{
+    stationDistance = d;
+}
+
+void Station::setStb1Status(bool s)
+{
+    stb1 = s;
+}
+
+void Station::setStb2Status(bool s)
+{
+    stb2 = s;
+}
+
+void Station::setStb3Status(bool s)
+{
+    stb3 = s;
+}
+
+void Station::setStb4Status(bool s)
+{
+    stb4 = s;
+}
+
+
+void Station::addToDeposit(Train &t)
+{
+    if (t.isDirection())
+        d1.addTrain(t);
+    else
+        d2.addTrain(t);
+}
+
+Train Station::removeFromDeposit(Train &t)
+{
+    if (t.isDirection())
+        return d1.removeTrain();
+    else
+        return d2.removeTrain();
+}
+
+// Alessandro Trevisan 1221819

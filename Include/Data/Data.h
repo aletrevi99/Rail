@@ -37,9 +37,6 @@ class Data {
    std::vector<Station> rev_st; //struttura dati che contiene le stazioni in ordine invertito
    int number_of_principal_stations;
    int number_of_local_stations;
-   int number_of_regional_trains;
-   int number_of_highspeed_trains;
-   int number_of_superhighspeed_trains;
    int last_arrival;
    std::vector<int> distances;  //vettore contenente le distanze tra le stazioni
    std::vector<int> principal_distances; //vettore contenente le distanze tra le stazioni principali

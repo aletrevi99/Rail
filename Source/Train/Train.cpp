@@ -2,11 +2,9 @@
 
 #include "Train.h"
 
-#include <utility>
-
 // cosrtuttori
 Train::Train(int tc, bool dir, std::vector<int> p)
-        : trainCode{tc}, direction{dir}, path{std::move(p)}, currSpeed{0.0}, distance{0.0}, minutes{0}, delay{0.0}, binary{0}
+        : trainCode{tc}, direction{dir}, path{std::move(p)}, currSpeed{0.0}, distance{0.0}, minutes{0}, binary{0}
 {}
 
 Regional_Train::Regional_Train(int tc, bool dir, const std::vector<int> &p) : Train(tc, dir, p)
@@ -29,11 +27,6 @@ Super_High_Speed_Train::Super_High_Speed_Train(int tc, bool dir, const std::vect
 }
 
 // getter functions
-double Train::getDelay() const
-{
-    return delay;
-}
-
 bool Train::isDirection() const
 {
     return direction;
@@ -57,11 +50,6 @@ std::vector<int> Train::getPath() const
 int Train::getMinutes() const
 {
     return minutes;
-}
-
-bool Train::isDeposit() const
-{
-    return deposit;
 }
 
 int Train::getPassedStations() const
@@ -104,22 +92,12 @@ int Train::getStops() const
     return stops;
 }
 
-bool Train::isNeedDeposit() const
-{
-    return needDeposit;
-}
-
-bool Train::isFirst(Train& t)
-{
-    return ((path[0]) < (t.getPath()[0]));
-}
-
 // setter functions
 void Train::setCurrSpeed(double cs)
 {
     if (cs < 0) cs = 0;
     else if (cs > maxSpeed) cs = maxSpeed;
-    else currSpeed = cs;
+    currSpeed = cs;
 }
 
 void Train::setDistance(double d)
@@ -139,14 +117,6 @@ void Train::setBinary(int bin)
         binary = bin;
 }
 
-void Train::setPath(std::vector<int> &p)
-{
-    if (p.empty())
-        throw std::invalid_argument("Il vettore degli orari di arrivo risulta vuoto. Riempilo.\n");
-    else
-        path = p;
-}
-
 void Train::setMinutes(int min)
 {
     if (min < 0)
@@ -156,15 +126,11 @@ void Train::setMinutes(int min)
         minutes = min;
 }
 
-void Train::setDeposit(bool dep)
-{
-    deposit = dep;
-}
-
 void Train::setPassedStations(int ps)
 {
     if (ps < 0)
-        throw std::length_error("Il numero della stazioni passate non puo' essere negativo. Imposta un valore positivo.\n");
+        throw std::length_error(
+                "Il numero della stazioni passate non puo' essere negativo. Imposta un valore positivo.\n");
     else
         passedStations = ps;
 }
@@ -172,7 +138,8 @@ void Train::setPassedStations(int ps)
 void Train::setStatus(int st)
 {
     if (st < 0 || st > 5)
-        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 5, estremi compresi.\n");
+        throw std::length_error(
+                "Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 5, estremi compresi.\n");
     status = st;
 }
 
@@ -186,14 +153,10 @@ void Train::setStops(int s)
     stops = s;
 }
 
-void Train::setNeedDeposit(bool nd)
-{
-    needDeposit = nd;
-}
 
-void Train::setDelay(int del)
+bool Train::isFirst(Train &t)
 {
-    delay = del;
+    return ((path[0]) < (t.getPath()[0]));
 }
 
 // overload operatori
@@ -204,32 +167,15 @@ bool operator<(const Train &t1, const Train &t2)
 
 std::ostream &operator<<(std::ostream &os, const Train &obj)
 {
-   os << obj.getTrainCode()<<" ";
-   int dir = 0;
-   if(!obj.isDirection())
-      dir = 1;
-   os << dir << " ";
-   os << obj.getType() <<" ";
-   std::vector<int> tmp = obj.getPath();
-   for(int i : tmp)
-      os << i <<" ";
-   
-   
-   /*
-    if (obj.getType() == 1) os << "Regionale ";
-    if (obj.getType() == 2) os << "Alta Velocità ";
-    if (obj.getType() == 3) os << "Super Alta Velocità ";
-    os << obj.getTrainCode() << "partito da " << obj.getMinutes() << "  minuti ";
-    if (obj.isDirection())
-        os << "dalla stazione di Origine (distante " << obj.getDistance() << "m) diretto al Capolinea, ";
+    os << obj.getTrainCode() << " ";
+    int dir = 0;
     if (!obj.isDirection())
-        os << "dalla stazione di Capolinea (distante " << obj.getDistance() << "m) diretto all'Origine, ";
-    if (obj.isDeposit()) os << "si trova nel deposito ";
-    if (obj.getBinary() == 1 || obj.getBinary() == 3) os << "viaggia a " << obj.getCurrSpeed() << "km/h nel binario 1 ";
-    if (obj.getBinary() == 2 || obj.getBinary() == 4) os << "viaggia a " << obj.getCurrSpeed() << "km/h nel binario 2 ";
-    if (obj.getDelay() >= 0) os << "è in ritardo di " << obj.getDelay() << " minuti.";
-    if (obj.getDelay() == 0) os << "è in orario.\n";
-   */
+        dir = 1;
+    os << dir << " ";
+    os << obj.getType() << " ";
+    std::vector<int> tmp = obj.getPath();
+    for (int i : tmp)
+        os << i << " ";
     return os;
 }
 

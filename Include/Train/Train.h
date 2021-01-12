@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
 
 // classe Treno base
 class Train
@@ -16,8 +17,6 @@ class Train
         double getCurrSpeed() const;
 
         double getDistance() const;
-
-        double getDelay() const;
 
         bool isDirection() const;
 
@@ -31,8 +30,6 @@ class Train
 
         int getMinutes() const;
 
-        bool isDeposit() const;
-
         int getPassedStations() const;
 
         int getStatus() const;
@@ -41,9 +38,6 @@ class Train
 
         int getStops() const;
 
-        bool isNeedDeposit() const;
-
-
         // setter functions
         void setCurrSpeed(double cs);
 
@@ -51,11 +45,7 @@ class Train
 
         void setBinary(int bin);
 
-        void setPath(std::vector<int> &path);
-
         void setMinutes(int minutes);
-
-        void setDeposit(bool deposit);
 
         void setPassedStations(int passedStations);
 
@@ -64,10 +54,6 @@ class Train
         void setNextBinary(int nextBinary);
 
         void setStops(int stops);
-
-        void setNeedDeposit(bool needDeposit);
-
-        void setDelay(int delay);
 
         // controlla se questo treno parte prima di t
         bool isFirst(Train& t);
@@ -84,8 +70,6 @@ class Train
         double distance;
         // tempo trascorso dalla partenza
         int minutes;
-        // ritardo accumulato dal treno
-        double delay;
         // true se va da origine a termine, false se va da termine a origine
         bool direction;
         // binario in entrata stazione. 0 se fuori da stazione. 1 a 4 se binari
@@ -96,10 +80,6 @@ class Train
         bool stopLocal = false;
         // tipologia treno. 1 regionale, 2 alta velocità, 3 super alta velocità
         int type = 0;
-        // se deve andare al deposito alla prossima stazione
-        bool needDeposit = false;
-        // variabile per indicare se un treno è nel deposito o no
-        bool deposit = false;
         // numero stazioni attraversate
         int passedStations = 0;
         // 0 se treno deve partire/arrivare al binario , 1 se deve lasciare il binario, 2 se deve uscire ai 5km,
