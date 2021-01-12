@@ -159,8 +159,8 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        int d = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
-        if(d == 20){
+        int dist = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        if(dist == 20){
             t.setStatus(3);
             get_station_binary(t, st[t.getPassedStations()+1], m, t.getDistance());
             int l = t.getBinary();      //binario in cui il treno dovrà fermarsi nella prossima stazione
@@ -286,13 +286,12 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
         /* Se la prossima stazione si trova esattamente a 20km di distanza da quella dai cui binari il treno è appena uscito, il binario su cui dovrà
          * transitare è quello che gli era stato assegnato in precedenza, in fase di segnalazione, una volta arrivato alla stazione precedente. */
         
-        int g = t.getBinary();          //viene salvato il binario attuale del treno
         vector<Station> st = stations;
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        int d = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
-        if(d == 20){
+        int dist = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        if(dist == 20){
             t.setStatus(4);                 //lo stato viene settato a 4 (entrata nei binari di una stazione) in quanto ha già segnalato in precedenza
             int l = t.getNextBinary();
             t.setBinary(l);
@@ -334,7 +333,7 @@ void Line::update_speed(Train& t){
     
     /* Il metodo update_speed() aggiorna la velocità corrente di un treno. */ 
     
-    //La velocità di un treno viene aggiornata solamente se il treno non è nel deposito.
+    //La velocità di un treno viene aggiornata solamente se il treno è in viaggio.
     if(t.getStatus() != 5){
         
         int m = 0;          //minuti
