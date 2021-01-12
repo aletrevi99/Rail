@@ -52,9 +52,9 @@ void Data::readStations() {
    ifstream file;
    file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/line_description_1.txt");
    if (file.is_open())
-      cout << "\n\n\tline_description.txt aperto con successo.\n\n" << endl;
+      cout << "\nline_description.txt aperto con successo.";
    if (!file.is_open())
-      cout << "\n\n\tline_description.txt non trovato. Prova a controllare la directory di appartenenza.\n\n" << endl;
+      cout << "\nline_description.txt non trovato. Prova a controllare la directory di appartenenza.";
    string line;
 
    string name_station;
@@ -111,9 +111,9 @@ void Data::readTrains() {
    ifstream file;
    file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/timetables.txt");
    if (file.is_open())
-      cout << "\ttimetables.txt aperto con successo.\n\n" << endl;
+      cout << "\ntimetables.txt aperto con successo.\n" << endl;
    if (!file.is_open())
-      cout << "\ttimetables.txt non trovato. Prova a controllare la directory di appartenenza.\n\n" << endl;
+      cout << "\ntimetables.txt non trovato. Prova a controllare la directory di appartenenza.\n" << endl;
    string line;
    int train_code;
    int train_type;

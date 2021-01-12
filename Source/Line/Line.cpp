@@ -503,7 +503,7 @@ bool Line::distance_check(Train& t, int position_in_active_trains){
 }
 
 void Line::simulation(){
-    cout << "\n\t\t\t\t\t\t\t\tSTART\n\n";
+    cout << "\nSTART SIMULATION\n" << endl;
     for(int i=0; i<time; i++){
         
         for(int t=0; t<nt; t++){
@@ -541,7 +541,7 @@ void Line::simulation(){
             check10km(active_trains[j]);
         }
     }
-    cout << "\n\t\t\t\t\t\t\t\tEND\n";
+    cout << "\nEND SIMULATION\n" << endl;
 }
 
 void Line::check10km(Train& t){
