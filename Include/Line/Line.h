@@ -10,9 +10,6 @@
 #ifndef ASSEGNAMENTO_2_LINE_H
 #define ASSEGNAMENTO_2_LINE_H
 
-#define GREEN "\033[32m"
-#define RESET "\033[0m"
-
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -33,6 +30,7 @@ class Line{
     
     private:
         std::vector<Station> stations;                  //vettore di oggetti di tipo Station contenente le stazioni della linea ferroviaria
+        std::vector<Station> reverse_stations;          //vettore di oggetti di tipo Station contenente le stazioni della linea ferroviaria, rovesciate
         std::vector<Train> trains;                      //vettore di oggetti di tipo Train contenente i treni della linea ferroviaria
         std::vector<Train> active_trains;               //vettore di oggetti di tipo Train contenente i treni attualmente in viaggio sulla linea ferroviaria
         std::vector<int> principal_distances;           //vettore di int contenente le distanze tra le stazioni principali (dir.: da st. origine a capolinea)
@@ -40,6 +38,7 @@ class Line{
         Data da;                                        //oggetto di tipo data
         int ns;                                         //numero di stazioni presenti nella linea ferroviaria
         int nt;                                         //numero di treni presenti nella linea ferroviaria
+        int time;                                       //munero di cicli massimi che farà la funzione simulation, corrisponde all'orari di arrivo dell'ultimo treno
         double get_km(Train& t, double m);                                                      //calcola quanti km percorre un treno in m minuti
         void get_station_binary(Train& t, Station& s, int m, double d);                         //segnalazione di un treno ai -20km da una stazione
         void train_arrival(Train& t, Station& s, int m, double d);                              //arrivo di un treno in una stazione

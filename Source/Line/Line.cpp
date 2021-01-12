@@ -15,14 +15,21 @@ Line::Line(){
     
     /* Costruttore della linea ferroviaria.
      * Vengono utilizzate le funzioni getStation() e getTrains() della classe Data per salvare stazioni e treni letti dai file timetables.txt e 
-     * line_description.txt nelle variabili stations e trains. Vengono settate ns e nt alle dimensioni rispettivamente di stations e trains.
+     * line_description.txt nelle variabili stations e trains.
+     * Viene inoltre utilizzata la funzione get_reversed_Station() della classe Data per salvare in reverse_station le stazioni della linea, rovesciate.
+     * Vengono settate ns e nt alle dimensioni rispettivamente di stations e trains.
+     * Viene settato il valore della variabile time, usufruendo della funzione getLastArrival() della classe Data.
      * Vengono inoltre riempiti principal_distances e reverse_principal_distances con i valori della distanze tra le varie stazioni. */
     
     stations = da.getStation();
     trains = da.getTrains();
     
+    reverse_stations = da.get_reversed_Station();
+    
     ns = stations.size();
     nt = trains.size();
+    
+    time = da.getLastArrival();
     
     principal_distances = da.getPrincipalDistances();
     reverse_principal_distances = principal_distances;
@@ -316,7 +323,7 @@ void Line::finish(Train& t, Station& s, int m){
 
     /* La funzione finish() gestisce l'arrivo di un treno all'ultima stazione e, quindi la conclusione della sua corsa.
      * Il treno, una volta arrivato, viene eliminato dall'array contenente i treni attualmente in viaggio sulla linea ferroviaria. */
-    cout << GREEN << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << "." << RESET << endl;
+    cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
     for (int i = 0; i < active_trains.size(); ++i){
         if (t.getTrainCode() == active_trains[i].getTrainCode())
             active_trains.erase(active_trains.begin() + i);
@@ -497,34 +504,38 @@ bool Line::distance_check(Train& t, int position_in_active_trains){
 
 void Line::simulation(){
     cout << "\n\t\t\t\t\t\t\t\tSTART\n\n";
-    for(int i=120; i<3000; i++){            //mettere a 0 !!!!
-
+    for(int i=0; i<time; i++){
+        
         for(int t=0; t<nt; t++){
             if(trains[t].getPath()[0] == i){
                 active_trains.push_back(trains[t]);
             }
         }
-
+        vector<Station> s = stations;
         for(int t=0; t<active_trains.size(); t++){
-
-            vector<Station> s = stations;
+            
             if(!active_trains[t].isDirection()){
-                s = da.get_reversed_Station();
+                s = reverse_stations;
             }
-
+            
             double d = active_trains[t].getDistance();
             if(active_trains[t].getStatus() != 1){
                 update_distance(active_trains[t]);
             }
-
+            
             station_entry(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             train_arrival(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             train_departure(active_trains[t], s[active_trains[t].getPassedStations()], i, t);
             station_exit(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             get_station_binary(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
-
+            
             update_speed(active_trains[t]);
-
+            
+            stations = s;
+            if(!active_trains[t].isDirection()){
+                reverse_stations = s;
+            }
+            
         }
         for (int j = 0; j < active_trains.size(); ++j){
             check10km(active_trains[j]);

@@ -42,11 +42,15 @@ vector<int> Data::getPrincipalDistances() const {
    return principal_distances;
 }
 
+int Data::getLastArrival() const {
+   return last_arrival;
+}
+
 //metodi privati
 void Data::readStations() {
 
    ifstream file;
-   file.open("../line_description.txt");
+   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/line_description_1.txt");
    if (file.is_open())
       cout << "\n\n\tline_description.txt aperto con successo.\n\n" << endl;
    if (!file.is_open())
@@ -105,7 +109,7 @@ void Data::readStations() {
 void Data::readTrains() {
 
    ifstream file;
-   file.open("../timetables.txt");
+   file.open("C:/Users/andrea/Desktop/LdP_Andrea/Prova7/timetables.txt");
    if (file.is_open())
       cout << "\ttimetables.txt aperto con successo.\n\n" << endl;
    if (!file.is_open())
