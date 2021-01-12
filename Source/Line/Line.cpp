@@ -93,7 +93,9 @@ void Line::get_station_binary(Train& t, Station& s, int m, double d){
                     }
                 }
             }
-            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " avvisa la stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
+            
+            cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " avvisa la stazione di " << s.get_Station_name() << ".\n";
+            cout << "Al minuto " << m << " la stazione di " << s.get_Station_name() << " avvisa il treno " << t.getTrainCode() << " che dovra' fermarsi al binariro: " << t.getBinary() << ".\n"; //Bin. = 5 -> deposito
             t.setStatus(4);         //next step: entrare nei binari di una stazione (ai -5km da essa)
         }
     }
@@ -157,7 +159,8 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        if((st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance()) == 20){
+        int d = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        if(d == 20){
             t.setStatus(3);
             get_station_binary(t, st[t.getPassedStations()+1], m, t.getDistance());
             int l = t.getBinary();      //binario in cui il treno dovrà fermarsi nella prossima stazione
@@ -239,7 +242,7 @@ void Line::station_entry(Train& t, Station& s, int m, double d){
                 }
             }
         }
-        cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " entra nel binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " entra nel binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
         t.setStatus(0);             //next step: arrivare in una stazione
     }
 }
@@ -257,7 +260,7 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
         p = true;
     }
     if(t.getStatus() == 2 && p){
-        cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " lascia il binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
+        //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " lascia il binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
         if(t.getBinary() == 1){
             s.set_stb1_status(true);
             t.setBinary(0);
@@ -283,11 +286,13 @@ void Line::station_exit(Train& t, Station& s, int m, double d){
         /* Se la prossima stazione si trova esattamente a 20km di distanza da quella dai cui binari il treno è appena uscito, il binario su cui dovrà
          * transitare è quello che gli era stato assegnato in precedenza, in fase di segnalazione, una volta arrivato alla stazione precedente. */
         
+        int g = t.getBinary();          //viene salvato il binario attuale del treno
         vector<Station> st = stations;
         if(!t.isDirection()){
             st = da.get_reversed_Station();
         }
-        if(st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance() == 20){
+        int d = st[t.getPassedStations()+1].get_Station_distance() - s.get_Station_distance();
+        if(d == 20){
             t.setStatus(4);                 //lo stato viene settato a 4 (entrata nei binari di una stazione) in quanto ha già segnalato in precedenza
             int l = t.getNextBinary();
             t.setBinary(l);
@@ -304,7 +309,7 @@ void Line::go_trought(Train& t, Station& s, int m){
      * fermi. Viene aggiornato il counter delle stazioni passate ma non, logicamente, quello delle fermate compiute. */
     
     t.setPassedStations(t.getPassedStations() + 1);
-    cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " comunica che non si fermera' alla stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
+    //cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " comunica che non si fermera' alla stazione di " << s.get_Station_name() << ". Bin.: " << t.getBinary() << ".\n";
     t.setStatus(3);             //next step: segnalare ad una stazione l'arrivo/passaggio
 }
 
