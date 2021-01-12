@@ -1,9 +1,13 @@
-Stazione_Origine
-Stazione1 0 100
-Stazione2 1 160
-Stazione3 1 180
-Stazione4 1 220
-Stazione5 0 240
-Stazione6 1 300
-Stazione7 0 390
-Stazione8 0 500
+Verona Porta Nuova
+Verona Porta Vescovo 1 30
+San Martino Buon Albergo 1 70
+Caldiero 1 100
+San Bonifacio 0 150
+Lonigo 1 190
+Montebello 1 230
+Altavilla Tavernelle 1 260
+Vicenza 0 300
+Lerino 1 330
+Grisignano Di Zocco 1 360
+Mestrino 1 400
+Padova 0 450
