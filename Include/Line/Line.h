@@ -42,7 +42,7 @@ class Line{
         double get_km(Train& t, double m);                                                      //calcola quanti km percorre un treno in m minuti
         void get_station_binary(Train& t, Station& s, int m, double d);                         //segnalazione di un treno ai -20km da una stazione
         void train_arrival(Train& t, Station& s, int m, double d);                              //arrivo di un treno in una stazione
-        void train_departure(Train& t, Station& s, int m, int position_in_active_trains);       //partenza di un treno da una stazione
+        void train_departure(Train& t, Station& s, int m);                                      //partenza di un treno da una stazione
         void station_entry(Train& t, Station& s, int m, double d);                              //entrata di un treno nei binari di una stazione (-5km dalla stazione)
         void station_exit(Train& t, Station& s, int m, double d);                               //uscita di un treno dai binari di una stazione (+5km dalla stazione)
         void go_trought(Train& t, Station& s, int m);                                           //treno "passa oltre" una stazione (senza fermarsi)
@@ -50,8 +50,7 @@ class Line{
         void update_distance(Train& t);                                                         //aggiornamento delle distaamze percorse dai singoli treni
         void update_speed(Train& t);                                                            //aggiornamento delle velocità dei singoli treni
         int next_Principal_Station(Train& t);                                                   //indica la prossima stazione principale che un treno incontra
-        bool distance_check(Train& t, int position_in_active_trains);                           //controlla che i treni non abbiano una distanza tra di loro inferiore ai 10km
-        void check10km(Train& t);
+        void check10km(Train& t);                                                               //controlla che tutti i treni abbiano una distanza tra loro superiore ai 10km
 };
 
 #endif //ASSEGNAMENTO2_LINE_H

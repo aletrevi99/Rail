@@ -30,6 +30,9 @@ Line::Line(){
     nt = trains.size();
     
     time = da.getLastArrival();
+    if(time < 1440){
+        time = 1440;
+    }
     
     principal_distances = da.getPrincipalDistances();
     reverse_principal_distances = principal_distances;
@@ -180,18 +183,14 @@ void Line::train_arrival(Train& t, Station& s, int m, double d){
     }
 }
 
-void Line::train_departure(Train& t, Station& s, int m, int position_in_active_trains){
+void Line::train_departure(Train& t, Station& s, int m){
     
     /* La funzione train_departure() gestisce la partenza di un treno da una stazione.
      * Se lo stato del treno è 1 (ovvero coerente con la prossima azione che il treno deve "compiere", la partenza da una stazione appunto) e se il treno
      * ha atteso 5 minuti per la salita/discesa dei passeggeri, esso parte dalla stazione.
-     * Il parametro m che viene passato indica il minuto in cui viene chiamata la funzione, mentre position_in_active_trains indica la posizione del treno
-     * nel vettore contente i treni attualmente in viaggio.*/
+     * Il parametro m che viene passato indica il minuto in cui viene chiamata la funzione. */
     
-    //Viene controllato se il treno ha una distanza superiore ai 10km rispetto al treno che lo precede
-    bool flag = distance_check(t, position_in_active_trains);
-    
-    if(t.getStatus() == 1 && flag){
+    if(t.getStatus() == 1){
         if(t.getPassedStations() == 0){
             cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " inizia la sua corsa dal binario " << t.getBinary() << " della stazione di " << s.get_Station_name() << ".\n";
             t.setStatus(2);         //next step: uscire dai binari di una stazione (5km dopo di essa)
@@ -202,11 +201,6 @@ void Line::train_departure(Train& t, Station& s, int m, int position_in_active_t
             t.setStatus(2);                     //next step: uscire dai binari di una stazione (5km dopo di essa)
         }
     }
-    
-    //controllo distance_check
-    /*if(!flag){
-        cout << "Train " << t.getTrainCode() <<  "is waiting!\n";
-    }*/
 }
 
 void Line::station_entry(Train& t, Station& s, int m, double d){
@@ -323,8 +317,31 @@ void Line::finish(Train& t, Station& s, int m){
 
     /* La funzione finish() gestisce l'arrivo di un treno all'ultima stazione e, quindi la conclusione della sua corsa.
      * Il treno, una volta arrivato, viene eliminato dall'array contenente i treni attualmente in viaggio sulla linea ferroviaria. */
+     
     cout << "Al minuto " << m << " il treno " << t.getTrainCode() << " conclude la sua corsa alla stazione di " << s.get_Station_name() << ".\n";
-    for (int i = 0; i < active_trains.size(); ++i){
+    
+    //Viene "liberato" il binario su cui il treno è arrivato.
+    if(t.getBinary() == 1){
+        s.set_stb1_status(true);
+        t.setBinary(0);
+    }else{
+        if(t.getBinary() == 2){
+            s.set_stb2_status(true);
+            t.setBinary(0);
+        }else{
+            if(t.getBinary() == 3){
+                s.set_stb3_status(true);
+                t.setBinary(0);
+            }else{
+                if(t.getBinary() == 4){
+                    s.set_stb4_status(true);
+                    t.setBinary(0);
+                }
+            }
+        }
+    }
+    
+    for(int i = 0; i < active_trains.size(); ++i){
         if (t.getTrainCode() == active_trains[i].getTrainCode())
             active_trains.erase(active_trains.begin() + i);
     }
@@ -482,53 +499,49 @@ int Line::next_Principal_Station(Train& t){
     return ns-1;        //se non viene trovata alcuna stazione principale, viene ritornato l'indice dell'ultima stazione.
 }
 
-bool Line::distance_check(Train& t, int position_in_active_trains){
-
-    /* Il metodo distance_check() controlla che la distanza di un treno dal treno che lo precede sia superiore ai 10km.
-     * Se è così il metodo ritorna true, altrimenti ritorna false.
-     * Il parametro position_in_active_trains indica la posizione del treno nel vettore contente i treni attualmente in viaggio. */
-
-    for(int i=0; i<active_trains.size(); i++){
-
-        //cout << "Distanza treno " << t.getTrainCode() << ": " << t.getDistance() << endl;
-        //cout << "Distanza treno " << t.getTrainCode() << " dal treno " << active_trains[i].getTrainCode() << ": " << fabs(active_trains[i].getDistance() - t.getDistance()) << endl;
-
-        if((fabs(active_trains[i].getDistance() - t.getDistance() )<= 10) &&
-           (i != position_in_active_trains) &&
-           (active_trains[i].isDirection() == t.isDirection())){
-            return false;
-        }
-    }
-    return true;
-}
-
 void Line::simulation(){
+    
+    /* La funzione simulation() simula il funzionamento giornaliero della linea ferroviaria. */
+    
     cout << "\nSTART SIMULATION\n" << endl;
-    for(int i=0; i<time; i++){
+    
+    //Scorre tutti i minuti della giornata, fino al minuto di arrivo dell'ultimo treno, eventualmente il giorno successivo.
+    for(int i=0; i<time+360; i++){      //ritardo massimo dell'ultimo treno: 6 ore
         
+        //Scorre tutti i treni
         for(int t=0; t<nt; t++){
+            
+            /* Se l'orario di partenza di un treno coincide con il minuto attuale, il treno viene inserito nel vettore contenente
+             * i treni attualmente in viaggio lungo la linea ferroviaria. */
+             
             if(trains[t].getPath()[0] == i){
                 active_trains.push_back(trains[t]);
             }
         }
         vector<Station> s = stations;
+        
+        //Scorre tutti i treni attualmente in viaggio lungo la linea ferroviaria.
         for(int t=0; t<active_trains.size(); t++){
             
+            //Se il treno viaggia da capolinea verso la stazione d'origine, vengono considerate le stazioni in ordine "rovesciato".
             if(!active_trains[t].isDirection()){
                 s = reverse_stations;
             }
             
-            double d = active_trains[t].getDistance();
+            double d = active_trains[t].getDistance();      //Distanza percorsa dal treno (calcolata al minuto i-1)
+            
+            //Viene aggiornata la distanza percorsa dal treno (calcolata al minuto i)
             if(active_trains[t].getStatus() != 1){
                 update_distance(active_trains[t]);
             }
             
             station_entry(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             train_arrival(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
-            train_departure(active_trains[t], s[active_trains[t].getPassedStations()], i, t);
+            train_departure(active_trains[t], s[active_trains[t].getPassedStations()], i);
             station_exit(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             get_station_binary(active_trains[t], s[active_trains[t].getPassedStations()], i, d);
             
+            //Viene aggiornata la velocità attuale del treno.
             update_speed(active_trains[t]);
             
             stations = s;
@@ -545,10 +558,13 @@ void Line::simulation(){
 }
 
 void Line::check10km(Train& t){
+    
+    /* La funzione check10km() controlla che i treni abbiano una distanza tra loro superiore ai 10km. */
+    
     for (int i = 0; i < active_trains.size(); i++){
-        if (((active_trains[i].getDistance() - t.getDistance()) <= 15 && (active_trains[i].getDistance() - t.getDistance() > 0)) &&  // 15 per evitare che vadano oltre ai 10 km di distanza
-            (active_trains[i].isDirection() == t.isDirection()) &&
-            (active_trains[i].getBinary() == 0)){
+        
+        //Controllo effettuato con 15 per evitare che vadano oltre ai 10 km di distanza.
+        if (((active_trains[i].getDistance() - t.getDistance()) <= 15 && (active_trains[i].getDistance() - t.getDistance() > 0)) && (active_trains[i].isDirection() == t.isDirection()) && (active_trains[i].getBinary() == 0)){
             t.setCurrSpeed(active_trains[i].getCurrSpeed());
         }
     }
