@@ -10,6 +10,9 @@
 #ifndef ASSEGNAMENTO_2_LINE_H
 #define ASSEGNAMENTO_2_LINE_H
 
+#define GREEN "\033[32m"
+#define RESET "\033[0m"
+
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -49,8 +52,7 @@ class Line{
         void update_speed(Train& t);                                                            //aggiornamento delle velocità dei singoli treni
         int next_Principal_Station(Train& t);                                                   //indica la prossima stazione principale che un treno incontra
         bool distance_check(Train& t, int position_in_active_trains);                           //controlla che i treni non abbiano una distanza tra di loro inferiore ai 10km
-        //void check10km(Train& t);
-    
+        void check10km(Train& t);
 };
 
 #endif //ASSEGNAMENTO2_LINE_H

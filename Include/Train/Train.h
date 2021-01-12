@@ -67,6 +67,8 @@ class Train
 
         void setNeedDeposit(bool needDeposit);
 
+        void setDelay(int delay);
+
         // controlla se questo treno parte prima di t
         bool isFirst(Train& t);
 
@@ -100,8 +102,8 @@ class Train
         bool deposit = false;
         // numero stazioni attraversate
         int passedStations = 0;
-        // 0 se treno deve partire/arrivare al binario , 1 se deve lasciare il binario, 2 se deve uscire ai 5km, 3 se deve segnalare, 4 se deve entrare ai 5km
-        // 5 se treno è arriavto
+        // 0 se treno deve partire/arrivare al binario , 1 se deve lasciare il binario, 2 se deve uscire ai 5km,
+        // 3 se deve segnalare, 4 se deve entrare ai 5km, 5 se treno è arriavto
         int status = 0;
         // vettore degli orari di arrivo
         std::vector<int> path;

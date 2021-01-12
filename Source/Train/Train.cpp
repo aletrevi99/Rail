@@ -172,7 +172,7 @@ void Train::setPassedStations(int ps)
 void Train::setStatus(int st)
 {
     if (st < 0 || st > 5)
-        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 6, estremi compresi.\n");
+        throw std::length_error("Lo stato del treno immesso non esiste. Imposta lo stato da 0 a 5, estremi compresi.\n");
     status = st;
 }
 
@@ -189,6 +189,11 @@ void Train::setStops(int s)
 void Train::setNeedDeposit(bool nd)
 {
     needDeposit = nd;
+}
+
+void Train::setDelay(int del)
+{
+    delay = del;
 }
 
 // overload operatori
