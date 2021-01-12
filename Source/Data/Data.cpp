@@ -55,7 +55,7 @@ int Data::getLastArrival() const {
 void Data::readStations() {
 
    ifstream file;
-   file.open("../line_description.txt");
+   file.open("line_description.txt");
    if (file.is_open())
       cout << "\nline_description.txt aperto con successo.";
    if (!file.is_open())
@@ -114,7 +114,7 @@ void Data::readStations() {
 void Data::readTrains() {
 
    ifstream file;
-   file.open("../timetables_3.txt");
+   file.open("timetables.txt");
    if (file.is_open())
       cout << "\ntimetables.txt aperto con successo.\n" << endl;
    if (!file.is_open())
