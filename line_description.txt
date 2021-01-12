@@ -1,11 +1,13 @@
-Milano Centrale
-Milano Lambrate 1 30
-Pioltello-Limito 1 60
-Treviglio 1 100
-Romano 1 140
-Chiari 1 180
-Rovato 1 220
-Brescia 0 250
-Desenzano Del Garda-Sirmione 0 300
-Peschiera Del Garda 0 330
-Verona Porta Nuova 0 370
+Verona Porta Nuova
+Verona Porta Vescovo 1 30
+San Martino Buon Albergo 1 70
+Caldiero 1 100
+San Bonifacio 0 150
+Lonigo 1 190
+Montebello 1 230
+Altavilla Tavernelle 1 260
+Vicenza 0 300
+Lerino 1 330
+Grisignano Di Zocco 1 360
+Mestrino 1 400
+Padova 0 450
